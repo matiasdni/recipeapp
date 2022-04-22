@@ -9,12 +9,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SQLite Helper Class, contains necessary methods for database management
  * @author Matias Niemelä
  * @version 1.0 4/2022
  */
+ /*TODO:
+        new column for image path (done), ingredients and instructions
+ *      Figure out how to store ingredients and instructions in the database
+        figure out how to read the data to classes (done)
+        Implement database to main program
+        addRecipe, onUpgrade, deleteRecipe (done)*/
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -23,6 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_RECIPE_CATEGORY = "RECIPE_CATEGORY";
     public static final String COLUMN_FAVORITE_RECIPE = "FAVORITE_RECIPE";
     public static final String COLUMN_ID = "ID";
+    public static final String COLUMN_IMAGE_PATH = "IMAGE_PATH";
 
     public DBHelper(@Nullable Context context) {
         super(context, "recipes.db", null, 1);
@@ -31,7 +39,13 @@ public class DBHelper extends SQLiteOpenHelper {
     // create database, called when accessing database for the first time
     @Override
     public void onCreate(SQLiteDatabase database) {
-        String createTableStatement = "CREATE TABLE " + RECIPE_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_RECIPE_CATEGORY + " TEXT, " + COLUMN_FAVORITE_RECIPE + " BOOL)";
+        String createTableStatement =
+                "CREATE TABLE " + RECIPE_TABLE + " (" +
+                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_RECIPE_NAME + " TEXT, " +
+                        COLUMN_RECIPE_CATEGORY + " TEXT, " +
+                        COLUMN_FAVORITE_RECIPE + " BOOL, " +
+                        COLUMN_IMAGE_PATH + " TEXT)";
         database.execSQL(createTableStatement);
     }
 
@@ -41,6 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // add recipe to database
+
     public boolean addRecipe(Recipe recipe) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -48,6 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_RECIPE_NAME, recipe.getName());
         contentValues.put(COLUMN_RECIPE_CATEGORY, recipe.getCategory());
         contentValues.put(COLUMN_FAVORITE_RECIPE, recipe.isFavorite());
+        contentValues.put(COLUMN_IMAGE_PATH, recipe.getImagePath());
 
         long insert = database.insert(RECIPE_TABLE, null, contentValues);
         if (insert == -1) {
@@ -58,9 +74,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean deleteRecipe(Recipe recipe) {
-        // iterates through database
+        // deletes recipe by id
         SQLiteDatabase database = this.getWritableDatabase();
-        String queryString = "DELETE FROM " + RECIPE_TABLE + " WHERE " + COLUMN_ID + " = " + recipe.getId();
+        String queryString = "DELETE FROM " +
+                RECIPE_TABLE + " WHERE " +
+                COLUMN_ID + " = " +
+                recipe.getId();
         Cursor cursor = database.rawQuery(queryString, null);
 
         if (cursor.moveToFirst()) {
@@ -70,12 +89,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Recipe> getRecipes() {
-
+    public ArrayList<Recipe> getRecipes() {
         List<Recipe> recipes = new ArrayList<>();
 
         // retrieve data from database
-
         String queryString = "SELECT * FROM " + RECIPE_TABLE;
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
@@ -87,12 +104,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 String recipeName = cursor.getString(1);
                 String category = cursor.getString(2);
                 boolean favoriteRecipe = cursor.getInt(3) == 1;
+                String imagePath = cursor.getString(4);
 
-                Recipe newRecipe = new Recipe(recipeID, recipeName, category, favoriteRecipe);
+                Recipe newRecipe = new Recipe(recipeID, recipeName, category, favoriteRecipe, imagePath);
                 recipes.add(newRecipe);
             } while (cursor.moveToNext());
-        } else {
-            // failed to retrieve data from database, do nothing for now at least
         }
 
         // close cursor and database, return recipes
