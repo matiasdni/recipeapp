@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         button_recipeAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(this, Reciepeadd.class);
+                Intent intent = new Intent(MainActivity.this, Reciepeadd.class);
                 startActivity(intent);
             }
         });
