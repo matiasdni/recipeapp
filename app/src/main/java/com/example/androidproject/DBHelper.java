@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * SQLite Helper Class, contains necessary methods for database management
+ *
  * @author Matias Niemelä
  * @version 1.0 4/2022
  */
@@ -24,6 +25,7 @@ import java.util.List;
         addRecipe, onUpgrade, deleteRecipe (done)*/
 
 public class DBHelper extends SQLiteOpenHelper {
+
 
     public static final String RECIPE_TABLE = "RECIPE_TABLE";
     public static final String COLUMN_RECIPE_NAME = "RECIPE_NAME";
