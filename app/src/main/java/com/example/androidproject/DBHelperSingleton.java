@@ -3,6 +3,8 @@ package com.example.androidproject;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 public class DBHelperSingleton {
 
     private Context context;
@@ -35,6 +37,10 @@ public class DBHelperSingleton {
 
     public void deleteRecipe(Recipe recipe){
         dbHelper.deleteRecipe(recipe);
+    }
+
+    public ArrayList<Recipe> getRecipes(){
+        return dbHelper.getRecipes();
     }
 
 }

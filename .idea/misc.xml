@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/leoko/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_main.xml" value="0.1671195652173913" />
-        <entry key="..\:/Users/leoko/AndroidStudioProjects/android-project/app/src/main/res/layout/cardview_recipe.xml" value="0.1671195652173913" />
+        <entry key="..\:/Users/kimra/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_main.xml" value="0.2734375" />
+        <entry key="..\:/Users/kimra/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_reciepeadd.xml" value="0.2734375" />
+        <entry key="..\:/Users/kimra/AndroidStudioProjects/android-project/app/src/main/res/layout/cardview_recipe.xml" value="0.2734375" />
+        <entry key="app/src/main/res/layout/activity_reciepeadd.xml" value="0.2984375" />
       </map>
     </option>
   </component>

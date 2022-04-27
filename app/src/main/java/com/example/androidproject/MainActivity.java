@@ -31,13 +31,11 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(MainActivity.this);
         DBHelperSingleton dbHelperSingleton = DBHelperSingleton.getInstance(MainActivity.this);
 
-        ArrayList<Recipe> recipes = new ArrayList<>(dbHelper.getRecipes());
+        ArrayList<Recipe> recipes = new ArrayList<>(dbHelperSingleton.getRecipes());
         RecipesViewAdapter adapter = new RecipesViewAdapter(this);
         adapter.setRecipes(recipes);
         /* TODO:
             retrieve data from database to recipes */
-
-
         recipesView.setAdapter(adapter);
         recipesView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -49,6 +47,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
     }
+
 }
