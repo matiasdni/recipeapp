@@ -28,7 +28,7 @@ public class Reciepeadd extends AppCompatActivity {
         button_saveRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (recipeName.getText().toString().length() >0 && recipeCategory.getText().toString().length() > 0 && recipeImagePath.getText().toString().length() > 0) {
+                if (recipeName.getText().toString().length() > 0 && recipeCategory.getText().toString().length() > 0 && recipeImagePath.getText().toString().length() > 0) {
                     // get inputs from text fields
                     Recipe newRecipe = new Recipe();
                     newRecipe.setName(recipeName.getText().toString());
@@ -39,14 +39,15 @@ public class Reciepeadd extends AppCompatActivity {
 
                     // save new recipe
                     DBHelperSingleton dbHelperSingleton = DBHelperSingleton.getInstance(Reciepeadd.this); // singleton
-                    dbHelperSingleton.addRecipe(recipe);
+                    dbHelperSingleton.addRecipe(newRecipe);
 
                 } else {
                     Toast.makeText(Reciepeadd.this, "Enter all required data", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
-
-
-        }
+        });
     }
+}
+
+
