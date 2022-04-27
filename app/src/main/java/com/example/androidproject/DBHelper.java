@@ -55,7 +55,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // add recipe to database
-
     public boolean addRecipe(Recipe recipe) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -90,7 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Recipe> getRecipes() {
-        List<Recipe> recipes = new ArrayList<>();
+        ArrayList<Recipe> recipes = new ArrayList<>();
 
         // retrieve data from database
         String queryString = "SELECT * FROM " + RECIPE_TABLE;
