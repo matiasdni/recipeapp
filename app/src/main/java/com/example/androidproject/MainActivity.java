@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         button_recipeAdd = findViewById(R.id.button_recipeAdd);
 
         dbHelper = new DBHelper(MainActivity.this);
+        DBHelperSingleton dbHelperSingleton = DBHelperSingleton.getInstance(MainActivity.this);
 
         ArrayList<Recipe> recipes = new ArrayList<>(dbHelper.getRecipes());
         RecipesViewAdapter adapter = new RecipesViewAdapter(this);
