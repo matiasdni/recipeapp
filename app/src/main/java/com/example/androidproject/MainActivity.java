@@ -43,13 +43,9 @@ public class MainActivity extends AppCompatActivity {
         // add test cases
 
         // Onclick listener for add recipe button
-
-        button_recipeAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Reciepeadd.class);
-                startActivity(intent);
-            }
+        button_recipeAdd.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, Reciepeadd.class);
+            startActivity(intent);
         });
 
 
