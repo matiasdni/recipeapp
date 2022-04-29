@@ -4,15 +4,25 @@
 
     <item android:id="@+id/item1"
         android:icon="@color/black"
-        android:title="@string/asetukset"
-        app:showAsAction="never" />
+        android:title="Settings"
+        app:showAsAction="never"
+
+        />
+
 
     <item android:id="@+id/item2"
-        android:title="@string/omat_reseptit"
+        android:title="My recipes"
         app:showAsAction="never" />
 
     <item android:id="@+id/item3"
-        android:title="@string/resepti_ehdotus"
+        android:title="Recipe suggestions"
         app:showAsAction="never" />
+
+    <item android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        />
 
 </menu>
