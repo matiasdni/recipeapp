@@ -1,5 +1,6 @@
 package com.example.androidproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         // get recipe name and thumbnail to cards
         holder.txtRecipeName.setText(recipes.get(position).getName());
         Glide.with(context)
@@ -44,12 +45,9 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
                 .load(recipes.get(position).getImagePath())
                 .into(holder.imageRecipe);
         // listen for card click and open recipe details activity
-        holder.parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /* TODO: Create new activity for displaying the clicked recipe */
-                Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
-            }
+        holder.parent.setOnClickListener(view -> {
+            /* TODO: Create new activity for displaying the clicked recipe */
+            Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
         });
     }
 

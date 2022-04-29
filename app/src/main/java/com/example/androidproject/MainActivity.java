@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     // references to components
     RecyclerView recipesView;
     DBHelper dbHelper;
-    Button button_recipeAdd;
+    FloatingActionButton button_recipeAdd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Recipe> recipes = new ArrayList<>(dbHelperSingleton.getRecipes());
         RecipesViewAdapter adapter = new RecipesViewAdapter(this);
         adapter.setRecipes(recipes);
-        /* TODO:
-            retrieve data from database to recipes */
         recipesView.setAdapter(adapter);
         recipesView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, Reciepeadd.class);
             startActivity(intent);
         });
-
     }
 
     @Override

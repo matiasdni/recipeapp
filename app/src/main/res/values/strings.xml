@@ -5,4 +5,5 @@
     <string name="asetukset">Asetukset</string>
     <string name="omat_reseptit">Omat reseptit</string>
     <string name="resepti_ehdotus">Resepti ehdotus</string>
+    <string name="new_recipe_button">New Recipe Button</string>
 </resources>

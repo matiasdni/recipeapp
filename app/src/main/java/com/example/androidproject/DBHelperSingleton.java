@@ -1,7 +1,7 @@
 package com.example.androidproject;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -9,13 +9,13 @@ public class DBHelperSingleton {
 
     private Context context;
     private DBHelper dbHelper;
-    private SQLiteDatabase database;
-    public static DBHelperSingleton ourInstance;
+    private static DBHelperSingleton ourInstance;
 
     public static DBHelperSingleton getInstance(Context context) {
-        if (ourInstance == null){
-            synchronized (DBHelperSingleton.class){
-                if (ourInstance == null){
+        if (ourInstance == null) {
+            // ensures only one instance is created
+            synchronized (DBHelperSingleton.class) {
+                if (ourInstance == null) {
                     ourInstance = new DBHelperSingleton(context);
                 }
             }
@@ -23,23 +23,30 @@ public class DBHelperSingleton {
         return ourInstance;
     }
 
-    private DBHelperSingleton(Context context){
+    private DBHelperSingleton(Context context) {
         this.context = context;
         dbHelper = new DBHelper(context);
     }
 
-    public boolean addRecipe(Recipe recipe){
+    public void addRecipe(Recipe recipe) {
+        // success
         if(dbHelper.addRecipe(recipe)){
-            return true;
+            Toast.makeText(context, "Recipe added", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Adding recipe failed", Toast.LENGTH_SHORT).show();
         }
-        return false;
     }
 
-    public void deleteRecipe(Recipe recipe){
-        dbHelper.deleteRecipe(recipe);
+    public void deleteRecipe(Recipe recipe) {
+        // success
+        if (dbHelper.deleteRecipe(recipe)) {
+            Toast.makeText(context, "Recipe deleted successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Recipe deletion failed", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public ArrayList<Recipe> getRecipes(){
+    public ArrayList<Recipe> getRecipes() {
         return dbHelper.getRecipes();
     }
 

@@ -7,17 +7,24 @@
     tools:context=".MainActivity"
     android:padding="10dp">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_recipeAdd"
+        android:backgroundTint="@color/secondary_color"
+        android:src="@drawable/ic_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:backgroundTint="#FFF"
+        app:rippleColor="#FFF"
+        android:contentDescription="@string/new_recipe_button" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/view_recipes"
         android:layout_centerHorizontal="true" />
-
-    <Button
-        android:id="@+id/button_recipeAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/view_recipes"
-        android:text="Add Recipe" />
 
 </RelativeLayout>
