@@ -23,10 +23,12 @@ import java.util.ArrayList;
 
 public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.ViewHolder> {
     private ArrayList<Recipe> recipes = new ArrayList<>();
-    private final Context context;
+    private Context context;
 
-    public RecipesViewAdapter(Context context) {
+    // initialize the dataset of the adapter
+    public RecipesViewAdapter(Context context, ArrayList<Recipe> recipes) {
         this.context = context;
+        this.recipes = recipes;
     }
 
     @NonNull
@@ -37,12 +39,13 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         // get recipe name and thumbnail to cards
         holder.txtRecipeName.setText(recipes.get(position).getName());
         Glide.with(context)
                 .asBitmap()
                 .load(recipes.get(position).getImagePath())
+                .centerCrop()
                 .into(holder.imageRecipe);
         // listen for card click and open recipe details activity
         holder.parent.setOnClickListener(view -> {
@@ -56,17 +59,17 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
         return recipes.size();
     }
 
-    public void setRecipes(ArrayList<Recipe> recipes) {
-        this.recipes = recipes;
-        notifyDataSetChanged();
+    public void addRecipe(Recipe recipe){
+        recipes.add(recipe);
+        notifyItemInserted(getItemCount());
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtRecipeName;
         private final CardView parent;
         private final ImageView imageRecipe;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             txtRecipeName = itemView.findViewById(R.id.txt_name);
             parent = itemView.findViewById(R.id.parent);

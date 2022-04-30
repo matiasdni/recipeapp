@@ -1,9 +1,16 @@
 package com.example.androidproject;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Parcelable {
 
     private String name;
     private String category;
@@ -43,6 +50,30 @@ public class Recipe {
         this.ingredients = ingredients;
         this.instructions = instructions;
     }
+
+    protected Recipe(Parcel in) {
+        name = in.readString();
+        category = in.readString();
+        id = in.readInt();
+        imagePath = in.readString();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            isFavorite = in.readBoolean();
+        } else {
+            isFavorite = in.readByte() != 0;
+        }
+    }
+
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 
     // getters and setters
     public String getName() {
@@ -111,5 +142,23 @@ public class Recipe {
                 ", ingredients=" + ingredients +
                 ", instructions=" + instructions +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(category);
+        parcel.writeInt(id);
+        parcel.writeString(imagePath);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            parcel.writeBoolean(isFavorite);
+        } else {
+            parcel.writeByte((byte) (isFavorite ? 1 : 0));
+        }
     }
 }

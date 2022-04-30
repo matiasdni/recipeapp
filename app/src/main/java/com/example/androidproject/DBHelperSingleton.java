@@ -37,6 +37,10 @@ public class DBHelperSingleton {
         }
     }
 
+    public int getRecipeID(Recipe recipe){
+        return dbHelper.getRecipeID(recipe);
+    }
+
     public void deleteRecipe(Recipe recipe) {
         // success
         if (dbHelper.deleteRecipe(recipe)) {

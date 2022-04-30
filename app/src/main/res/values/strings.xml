@@ -6,4 +6,7 @@
     <string name="omat_reseptit">Omat reseptit</string>
     <string name="resepti_ehdotus">Resepti ehdotus</string>
     <string name="new_recipe_button">New Recipe Button</string>
+    <string name="recipe_category">Recipe Category</string>
+    <string name="favorite">Favorite</string>
+    <string name="save_recipe">Save Recipe</string>
 </resources>

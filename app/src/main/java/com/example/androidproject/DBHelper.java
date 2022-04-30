@@ -90,6 +90,30 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public int getRecipeID(Recipe recipe) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + RECIPE_TABLE;
+        Cursor cursor = database.rawQuery(queryString, null);
+        int recipeID = 0;
+        /*
+        Since this method is mainly used when adding a new recipe, it is more efficient to
+        start going through the database from last to start. Currently it looks for the same
+        name and image path and it is enough to find the correct ID for now.
+        */
+        if(cursor.moveToLast()){
+            do {
+                if(recipe.getName().equals(cursor.getString(1)) &&
+                        recipe.getImagePath().equals(cursor.getString(4))){
+                    recipeID = cursor.getInt(0);
+                }
+            } while(cursor.moveToPrevious());
+        }
+        cursor.close();
+        database.close();
+        // returns 0 in case the method fails, shouldn't ever happen.
+        return recipeID;
+    }
+
     public ArrayList<Recipe> getRecipes() {
         ArrayList<Recipe> recipes = new ArrayList<>();
 

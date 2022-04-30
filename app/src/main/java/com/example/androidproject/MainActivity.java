@@ -2,12 +2,20 @@ package com.example.androidproject;
 
 import static com.example.androidproject.R.menu.example_menu;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -23,9 +31,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     // references to components
-    RecyclerView recipesView;
-    DBHelper dbHelper;
+    private static RecyclerView recipesView;
+    DBHelperSingleton dbHelperSingleton;
     FloatingActionButton button_recipeAdd;
+
+    static final int ADD_NEW_RECIPE = 1;
+    ActivityResultLauncher<Intent> reciepeAddResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,24 +45,49 @@ public class MainActivity extends AppCompatActivity {
 
         recipesView = findViewById(R.id.view_recipes);
         button_recipeAdd = findViewById(R.id.button_recipeAdd);
-
-        dbHelper = new DBHelper(MainActivity.this);
-        DBHelperSingleton dbHelperSingleton = DBHelperSingleton.getInstance(MainActivity.this);
+        dbHelperSingleton = DBHelperSingleton.getInstance(this);
 
         ArrayList<Recipe> recipes = new ArrayList<>(dbHelperSingleton.getRecipes());
-        RecipesViewAdapter adapter = new RecipesViewAdapter(this);
-        adapter.setRecipes(recipes);
-        recipesView.setAdapter(adapter);
+        RecipesViewAdapter recipeAdapter = new RecipesViewAdapter(this, recipes);
+        recipesView.setAdapter(recipeAdapter);
         recipesView.setLayoutManager(new LinearLayoutManager(this));
 
-        // add test cases
+        reciepeAddResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            if (data != null) {
+                                Recipe newRecipe = data.getParcelableExtra("new_recipe");
+                                recipeAdapter.addRecipe(newRecipe);
+                            }
+                        }
+                    }
+                });
 
         // Onclick listener for add recipe button
         button_recipeAdd.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, Reciepeadd.class);
-            startActivity(intent);
+            reciepeAddForResult();
         });
     }
+
+    public void reciepeAddForResult() {
+        Intent intent = new Intent(this, Reciepeadd.class);
+        reciepeAddResultLauncher.launch(intent);
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == ADD_NEW_RECIPE && resultCode == RESULT_OK) {
+//            //Recipe newRecipe = data.getExtras().get("new_recipe");
+//            Recipe newRecipe = data.getParcelableExtra("new_recipe");
+//            // deal with the item yourself
+//            updateRecipesView(this);
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
