@@ -7,7 +7,8 @@
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
     app:cardCornerRadius="15dp"
-    app:cardElevation="8dp">
+    app:cardElevation="8dp"
+    android:backgroundTint="@color/d_gray">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -32,7 +33,9 @@
             android:layout_alignParentStart="true"
             android:layout_below="@id/image_recipe"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="16dp"/>
+            android:layout_marginStart="16dp"
+            android:textColor="@color/white"
+            />
 
 
 

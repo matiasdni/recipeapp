@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     static final int ADD_NEW_RECIPE = 1;
     ActivityResultLauncher<Intent> reciepeAddResultLauncher;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

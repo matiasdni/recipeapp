@@ -9,4 +9,6 @@
     <string name="recipe_category">Recipe Category</string>
     <string name="favorite">Favorite</string>
     <string name="save_recipe">Save Recipe</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
 </resources>

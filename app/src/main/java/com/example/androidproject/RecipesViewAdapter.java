@@ -1,7 +1,8 @@
 package com.example.androidproject;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +54,8 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
                 .into(holder.imageRecipe);
         // listen for card click and open recipe details activity
         holder.parent.setOnClickListener(view -> {
+            Intent intent = new Intent(this.context, RecipeInfo.class);
+            context.startActivity(intent);
             /* TODO: Create new activity for displaying the clicked recipe */
             Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
         });
