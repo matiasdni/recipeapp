@@ -6,7 +6,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.appcompat.app.ActionBar;
 
+import android.view.MenuItem;
+import androidx.annotation.NonNull;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -40,6 +43,7 @@ public class Reciepeadd extends AppCompatActivity {
     DBHelperSingleton dbHelperSingleton;
     ActivityResultLauncher<Intent> takeImageResultLauncher, loadImageResultLauncher;
 
+
     // for identifying if user takes or loads image
     static final boolean IMAGE_CAPTURE = true;
     boolean imageAction = false;
@@ -50,6 +54,8 @@ public class Reciepeadd extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reciepeadd);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // references to components
         recipeName = findViewById(R.id.recipeName);
@@ -64,6 +70,9 @@ public class Reciepeadd extends AppCompatActivity {
         takeImageResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
+
+
+
 
                     @Override
                     public void onActivityResult(ActivityResult result) {
@@ -167,6 +176,8 @@ public class Reciepeadd extends AppCompatActivity {
         intent.setData(contentUri);
         this.sendBroadcast(intent);
     }
+
+
 
 
     @Override

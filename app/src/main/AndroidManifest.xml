@@ -33,6 +33,7 @@
         </provider>
         <activity
             android:name=".Reciepeadd"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
