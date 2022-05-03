@@ -64,11 +64,16 @@ public class DBHelperSingleton {
     }
 
     public ArrayList<Instructions> getInstructions(Recipe recipe) {
-        return dbHelperInstructions.getInstructions(recipe);
+        return dbHelperInstructions.getInstructions();
     }
 
     // setIngredients
 
+    }
+
     ///setInstructions
 
-}
+
+
+
+
