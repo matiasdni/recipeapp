@@ -1,7 +1,5 @@
 package com.example.androidproject;
 
-import static android.os.Build.ID;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * SQLite Helper Class, contains necessary methods for database management
@@ -33,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_RECIPE_NAME = "RECIPE_NAME";
     public static final String COLUMN_RECIPE_CATEGORY = "RECIPE_CATEGORY";
     public static final String COLUMN_FAVORITE_RECIPE = "FAVORITE_RECIPE";
-    public static final String COLUMN_ID = "ID";
+    public static final String COLUMN_RECIPE_ID = "ID";
     public static final String COLUMN_IMAGE_PATH = "IMAGE_PATH";
 
     public DBHelper(@Nullable Context context) {
@@ -45,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         String createTableStatement =
                 "CREATE TABLE " + RECIPE_TABLE + " (" +
-                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_RECIPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_RECIPE_NAME + " TEXT, " +
                         COLUMN_RECIPE_CATEGORY + " TEXT, " +
                         COLUMN_FAVORITE_RECIPE + " BOOL, " +
@@ -81,7 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         String queryString = "DELETE FROM " +
                 RECIPE_TABLE + " WHERE " +
-                COLUMN_ID + " = " +
+                COLUMN_RECIPE_ID + " = " +
                 recipe.getId();
         Cursor cursor = database.rawQuery(queryString, null);
 

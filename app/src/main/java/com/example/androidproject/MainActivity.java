@@ -2,36 +2,25 @@ package com.example.androidproject;
 
 import static com.example.androidproject.R.menu.example_menu;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,22 +31,19 @@ public class MainActivity extends AppCompatActivity {
 
     static final int ADD_NEW_RECIPE = 1;
     ActivityResultLauncher<Intent> reciepeAddResultLauncher;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         recipesView = findViewById(R.id.view_recipes);
         button_recipeAdd = findViewById(R.id.button_recipeAdd);
         dbHelperSingleton = DBHelperSingleton.getInstance(this);
+
         ArrayList<Recipe> recipes = new ArrayList<>(dbHelperSingleton.getRecipes());
         RecipesViewAdapter recipeAdapter = new RecipesViewAdapter(this, recipes);
         recipesView.setAdapter(recipeAdapter);
         recipesView.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-
 
         reciepeAddResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -81,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reciepeAddForResult() {
-        Intent intent = new Intent(this, Reciepeadd.class);
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
         reciepeAddResultLauncher.launch(intent);
     }
 

@@ -1,11 +1,8 @@
 package com.example.androidproject;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +16,6 @@ public class Recipe implements Parcelable {
     private boolean isFavorite;
     private List<Ingredients> ingredients;
     private List<Instructions> instructions;
-
 
     // constructors
     public Recipe() {

@@ -33,6 +33,11 @@
             android:name=".MyFavorites"
             android:exported="false"
             android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".RecipeDetailsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_recipe_details"
+            android:theme="@style/Theme.AndroidProject.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -43,7 +48,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
         <activity
             android:name=".RecipeInfo"
             android:exported="false"
