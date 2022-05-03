@@ -55,8 +55,11 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
         // listen for card click and open recipe details activity
         holder.parent.setOnClickListener(view -> {
             Intent intent = new Intent(this.context, RecipeInfo.class);
+            /*TODO  getting the recipe name and image to RecipeInfo (Not working correctly) */
+            intent.putExtra("resId",R.drawable.ic_image_placeholder);
+            intent.putExtra("resName",R.id.txt_name);
             context.startActivity(intent);
-            /* TODO: Create new activity for displaying the clicked recipe */
+            /* TODO: Create new activity for displaying the clicked recipe (Done) */
             Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
         });
     }

@@ -115,10 +115,12 @@ public class DBHelper extends SQLiteOpenHelper {
         // returns 0 in case the method fails, shouldn't ever happen.
         return recipeID;
     }
-
+        //ArrayList for holding recipes
     public ArrayList<Recipe> getRecipes() {
         ArrayList<Recipe> recipes = new ArrayList<>();
-        //recipes.add(new Recipe("name", "category", 1, "imagePath", ingredients, List<Instructions>));
+        recipes.add(new Recipe(1, "Lemon Chiken", "Food", true, ""));
+
+
         // retrieve data from database
         String queryString = "SELECT * FROM " + RECIPE_TABLE;
         SQLiteDatabase database = this.getReadableDatabase();

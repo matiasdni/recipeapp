@@ -12,8 +12,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class RecipeInfo extends AppCompatActivity {
+    DBHelper dbHelper;
     DBHelperSingleton dbHelperSingleton;
-    EditText recipeName, recipeCategory;
+    TextView recipeName, recipeCategory;
     TextView ingredients;
     TextView instructions;
     ImageView image_recipe;
@@ -21,23 +22,19 @@ public class RecipeInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_info);
-        dbHelperSingleton = DBHelperSingleton.getInstance(this);
-        recipeName = findViewById(R.id.recipeName);
-        recipeCategory = findViewById(R.id.recipeCategory);
-        image_recipe = findViewById(R.id.image_recipe);
-        ingredients = findViewById(R.id.ingredients_text);
-        instructions = findViewById(R.id.instructions_text);
+        image_recipe = (ImageView)findViewById(R.id.image_recipe);
+        recipeName = (TextView) findViewById(R.id.txt_name2);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle!=null){
+            int resName = bundle.getInt("resName");
+            recipeName.setText(resName);
+            int resId = bundle.getInt("resId");
+            image_recipe.setImageResource(resId);
+        }
 
-
-
-        //Get the right picture
-        //Right recipe name
-        //Instructions for recipe
-        //and ingredients
-        //and display them in activity_recipe_info.xml
+/*TODO:
+        Get the right picture, recipe name.
+        Instructions and ingredients for recipe.
+        Display them in activity_recipe_info.xml*/
     }
-
-//    public void setRecipeName(EditText recipeName) {
-//        this.recipeName = recipeName;
-//    }
 }
