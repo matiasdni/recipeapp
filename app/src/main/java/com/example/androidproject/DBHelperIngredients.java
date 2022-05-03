@@ -51,13 +51,13 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
         return ingredientsList;
     }
 
-    public Boolean deleteIngredient(String ingredient, int id) {
+    public Boolean deleteIngredient(Ingredients ingredients) {
     // deletes ingredients by id
         SQLiteDatabase database = this.getWritableDatabase();
         String queryString = "DELETE FROM " +
                 INGREDIENTS_TABLE + " WHERE " +
                 COLUMN_INGREDIENT_ID + " = " +
-                ingredient.getId();
+                ingredients.getId();
         Cursor cursor = database.rawQuery(queryString, null);
 
         if (cursor.moveToFirst()) {
@@ -92,7 +92,7 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
                         int Id = cursor.getInt(0);
 
                         Ingredients newIngredients = new Ingredients(ingredientName, recipeID, Id);
-                        Ingredients.add(newIngredients);
+                        //Ingredients.add(newIngredients);
                     } while (cursor.moveToNext());
 
                 }
