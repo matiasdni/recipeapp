@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Project</string>
+    <string name="app_name"></string>
     <string name="recipe_name">Recipe Name</string>
     <string name="recipe_image">Recipe Image</string>
     <string name="asetukset">Asetukset</string>
