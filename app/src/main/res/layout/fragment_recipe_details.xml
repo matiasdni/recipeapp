@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Take"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@id/button_load"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_recipe" />
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Load"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_take"
         app:layout_constraintTop_toBottomOf="@id/image_recipe" />

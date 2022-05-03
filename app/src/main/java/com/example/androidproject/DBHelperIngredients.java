@@ -1,5 +1,6 @@
 package com.example.androidproject;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -50,6 +51,24 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
         ArrayList<Ingredients> ingredientsList = new ArrayList<>();
         return ingredientsList;
     }
+
+    public boolean addIngredient(Instructions instructions) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUMN_RECIPE_ID, instructions.getRecipeId());
+        contentValues.put(COLUMN_INGREDIENT_NAME, instructions.getBody());
+
+        long insert = database.insert(INGREDIENTS_TABLE, null, contentValues);
+        if (insert == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
 
     public Boolean deleteIngredient(Ingredients ingredients) {
     // deletes ingredients by id

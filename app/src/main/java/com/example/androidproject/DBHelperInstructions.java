@@ -93,7 +93,7 @@ public class DBHelperInstructions extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<Instructions> getInstructions() {
+    public ArrayList<Instructions> getInstructions(Recipe recipe) {
         ArrayList<Instructions> instructions = new ArrayList<>();
         //instructions.add(new Recipe("name", "category", 1, "imagePath", ingredients, List<Instructions>));
         // retrieve data from database
