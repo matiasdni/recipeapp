@@ -26,10 +26,13 @@
         android:theme="@style/Theme.AndroidProject">
         <activity
             android:name=".MyRecipes"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            />
         <activity
             android:name=".MyFavorites"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
