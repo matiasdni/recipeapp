@@ -1,5 +1,7 @@
 package com.example.androidproject;
 
+import static android.os.Build.ID;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -116,7 +118,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Recipe> getRecipes() {
         ArrayList<Recipe> recipes = new ArrayList<>();
-
+        //recipes.add(new Recipe("name", "category", 1, "imagePath", ingredients, List<Instructions>));
         // retrieve data from database
         String queryString = "SELECT * FROM " + RECIPE_TABLE;
         SQLiteDatabase database = this.getReadableDatabase();
@@ -141,4 +143,5 @@ public class DBHelper extends SQLiteOpenHelper {
         database.close();
         return recipes;
     }
+
 }
