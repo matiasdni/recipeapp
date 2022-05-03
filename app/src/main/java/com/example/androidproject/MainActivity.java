@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         RecipesViewAdapter recipeAdapter = new RecipesViewAdapter(this, recipes);
         recipesView.setAdapter(recipeAdapter);
         recipesView.setLayoutManager(new LinearLayoutManager(this));
+
+
+
+
 
         reciepeAddResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -113,5 +118,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+
+
     }
-}
+
+
+    }
+
