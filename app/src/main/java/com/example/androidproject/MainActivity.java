@@ -94,4 +94,5 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(example_menu, menu);
         return true;
     }
+
 }
