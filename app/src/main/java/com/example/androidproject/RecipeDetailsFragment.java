@@ -14,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -36,6 +37,16 @@ public class RecipeDetailsFragment extends Fragment {
         EditText recipeCategory = requireActivity().findViewById(R.id.recipeCategory);
         ImageView recipeImage = requireActivity().findViewById(R.id.image_recipe);
         SwitchMaterial favorite = requireActivity().findViewById(R.id.isFavorite);
+
+        Bundle bundle = new Bundle();
+        if(bundle.get("ACTION") == "modifying") {
+            Recipe recipe = bundle.getParcelable("recipe");
+            recipeName.setText(recipe.getName());
+            recipeCategory.setText(recipe.getCategory());
+            Glide.with(view).load(recipe.getImagePath())
+                    .centerCrop()
+                    .into(recipeImage);
+        }
 
         fButton.setOnClickListener(
                 new View.OnClickListener() {

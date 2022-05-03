@@ -16,6 +16,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private FloatingActionButton fab;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -32,6 +32,13 @@ public class RecipeIngredientsFragment extends Fragment {
         FloatingActionButton button = requireActivity().findViewById(R.id.fab);
         recipe = RecipeIngredientsFragmentArgs.fromBundle(getArguments()).getRecipe();
 
+        Bundle bundle = new Bundle();
+        if(bundle.get("ACTION") == "modifying") {
+            Recipe recipe = bundle.getParcelable("recipe");
+
+            // set list contents
+            recipe.getIngredients();
+        }
 
         button.setOnClickListener(view1 -> {
             if(recipe.getIngredients() == null) {

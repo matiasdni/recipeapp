@@ -24,13 +24,17 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String ACTION_NEW = "add_new";
+    private static final String ACTION_MODIFY = "modify";
+
     // references to components
     private static RecyclerView recipesView;
     DBHelperSingleton dbHelperSingleton;
     FloatingActionButton button_recipeAdd;
 
     static final int ADD_NEW_RECIPE = 1;
-    ActivityResultLauncher<Intent> reciepeAddResultLauncher;
+    static ActivityResultLauncher<Intent> reciepeAddResultLauncher;
+    RecipesViewAdapter recipeAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         dbHelperSingleton = DBHelperSingleton.getInstance(this);
 
         ArrayList<Recipe> recipes = new ArrayList<>(dbHelperSingleton.getRecipes());
-        RecipesViewAdapter recipeAdapter = new RecipesViewAdapter(this, recipes);
+        recipeAdapter = new RecipesViewAdapter(this, recipes);
         recipesView.setAdapter(recipeAdapter);
         recipesView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void reciepeAddForResult() {
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        intent.putExtra(ACTION_NEW, 0);
         reciepeAddResultLauncher.launch(intent);
     }
 
@@ -109,5 +114,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    }
 
+
+}
