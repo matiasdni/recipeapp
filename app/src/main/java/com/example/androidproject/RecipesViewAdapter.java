@@ -53,38 +53,38 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
                 .into(holder.imageRecipe);
         // listen for card click and open recipe details activity
         holder.parent.setOnClickListener(view -> {
-            switch(view.getId()) {
-                case R.id.ib_popup_menu:
-                    PopupMenu popupMenu = new PopupMenu(context, holder.ibPopupMenu);
-                    popupMenu.inflate(R.menu.cardpopup_menu);
-                    popupMenu.show();
-                    popupMenu.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) menuItem -> {
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_modify_recipe:
-                                Intent intent = new Intent(context, RecipeDetailsActivity.class);
-                                intent.putExtra("ACTION", "modify");
-                                MainActivity.reciepeAddResultLauncher.launch(intent);
-                                break;
-                            case R.id.menu_delete_recipe:
-                                recipes.remove(recipes.get(position));
-                                notifyItemRemoved(position);
-                                DBHelperSingleton.getInstance(view.getContext()).deleteRecipe(recipes.get(position));
-                                break;
-                            default:
-                                break;
-                        }
-                        return false;
-                    });
-                default:
-                    Intent intent = new Intent(this.context, RecipeInfo.class);
-                    /*TODO  getting the recipe name and image to RecipeInfo (Not working correctly) */
-                    intent.putExtra("resId", R.drawable.ic_image_placeholder);
-                    intent.putExtra("resName", R.id.txt_name);
-                    context.startActivity(intent);
-                    /* TODO: Create new activity for displaying the clicked recipe (Done) */
-                    Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this.context, RecipeInfo.class);
+            /*TODO  getting the recipe name and image to RecipeInfo (Not working correctly) */
+            intent.putExtra("resId", R.drawable.ic_image_placeholder);
+            intent.putExtra("resName", R.id.txt_name);
+            context.startActivity(intent);
+            /* TODO: Create new activity for displaying the clicked recipe (Done) */
+            Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
+        });
+        holder.ibPopupMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, holder.ibPopupMenu);
+                popupMenu.inflate(R.menu.cardpopup_menu);
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.menu_modify_recipe:
+                            Intent intent = new Intent(context, RecipeDetailsActivity.class);
+                            intent.putExtra("ACTION", "modify");
+                            MainActivity.reciepeAddResultLauncher.launch(intent);
+                            break;
+                        case R.id.menu_delete_recipe:
+                            recipes.remove(recipes.get(position));
+                            notifyItemRemoved(position);
+                            DBHelperSingleton.getInstance(view.getContext()).deleteRecipe(recipes.get(position));
+                            break;
+                        default:
+                            break;
+                    }
+                    return false;
+                });
             }
-
         });
     }
 
