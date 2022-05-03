@@ -115,7 +115,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //ArrayList for holding recipes
     public ArrayList<Recipe> getRecipes() {
         ArrayList<Recipe> recipes = new ArrayList<>();
-        recipes.add(new Recipe(1, "Lemon Chiken", "Food", true, ""));
+        recipes.add(new Recipe(1, "Lemon Chicken", "Food", true, ""));
 
 
         // retrieve data from database

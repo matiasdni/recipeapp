@@ -1,6 +1,7 @@
 package com.example.androidproject;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -50,26 +51,55 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
         return ingredientsList;
     }
 
-    public Boolean deleteIngredient(String ingredient, int id){
-        if(true) {
+    public Boolean deleteIngredient(String ingredient, int id) {
+    // deletes ingredients by id
+        SQLiteDatabase database = this.getWritableDatabase();
+        String queryString = "DELETE FROM " +
+                INGREDIENTS_TABLE + " WHERE " +
+                COLUMN_INGREDIENT_ID + " = " +
+                ingredient.getId();
+        Cursor cursor = database.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
     // deletes all ingredients with this recipeID
-
+/*
     public Boolean deleteIngredients(int id){
         if(true) {
             return true;
         }
         return false;
     }
-
+*/
     public ArrayList<Ingredients> getIngredients(Recipe recipe) {
         ArrayList<Ingredients> ingredients = new ArrayList<>();
-
+        //ingredients.add(new recipe("name", "category", 1, Ingredients, List<Ingredients>));
         // code that gets ingredients
+        String queryString = "SELECT * FROM " + INGREDIENTS_TABLE;
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(queryString, null);
 
+
+                if(cursor.moveToFirst()) {
+
+                    do {
+                        String ingredientName = cursor.getString(1);
+                        int recipeID = cursor.getInt(0);
+                        int Id = cursor.getInt(0);
+
+                        Ingredients newIngredients = new Ingredients(ingredientName, recipeID, Id);
+                        Ingredients.add(newIngredients);
+                    } while (cursor.moveToNext());
+
+                }
+
+        // close cursor and database, return recipes
+        cursor.close();
+        database.close();
         return ingredients;
     }
 
