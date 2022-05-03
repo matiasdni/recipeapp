@@ -24,6 +24,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
+        <activity
+            android:name=".MyRecipes"
+            android:exported="false" />
+        <activity
+            android:name=".MyFavorites"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -34,6 +40,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name=".RecipeInfo"
             android:exported="false"

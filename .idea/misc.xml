@@ -3,20 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/kimra/AndroidStudioProjects/android-project/app/src/main/res/drawable-anydpi/ic_add.xml" value="0.1965" />
-        <entry key="..\:/Users/kimra/AndroidStudioProjects/android-project/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.1965" />
+        <entry key="..\:/Users/Lekematti/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_main.xml" value="0.34103260869565216" />
+        <entry key="..\:/Users/Lekematti/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_my_favorites.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Lekematti/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_my_recipes.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Lekematti/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_reciepeadd.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Lekematti/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_recipe.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Lekematti/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_recipe_info.xml" value="0.5401041666666667" />
+        <entry key="..\:/Users/Lekematti/AndroidStudioProjects/android-project/app/src/main/res/layout/cardview_recipe.xml" value="0.34103260869565216" />
+        <entry key="..\:/Users/Lekematti/AndroidStudioProjects/android-project/app/src/main/res/menu/example_menu.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/kimra/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_main.xml" value="0.2734375" />
         <entry key="..\:/Users/kimra/AndroidStudioProjects/android-project/app/src/main/res/layout/activity_reciepeadd.xml" value="0.2734375" />
         <entry key="..\:/Users/kimra/AndroidStudioProjects/android-project/app/src/main/res/layout/cardview_recipe.xml" value="0.2734375" />
-        <entry key="app/src/main/res/drawable-anydpi/ic_image_placeholder.xml" value="0.2085" />
-        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_reciepeadd.xml" value="0.2984375" />
-        <entry key="app/src/main/res/layout/activity_recipe_info.xml" value="0.1453125" />
-        <entry key="app/src/main/res/layout/cardview_recipe.xml" value="0.1453125" />
-        <entry key="app/src/main/res/layout/recipe_recycler_fragment.xml" value="0.21197916666666666" />
-        <entry key="app/src/main/res/menu/example_menu.xml" value="0.1" />
-        <entry key="app/src/main/res/xml/file_paths.xml" value="0.1" />
       </map>
     </option>
   </component>
