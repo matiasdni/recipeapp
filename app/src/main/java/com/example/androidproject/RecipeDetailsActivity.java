@@ -16,6 +16,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private FloatingActionButton fab;
 
+    String currentimagePath;
+    Recipe newRecipe = new Recipe();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,4 +43,5 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
         });
     }
+
 }
