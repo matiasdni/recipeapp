@@ -57,8 +57,11 @@ public class MainActivity extends AppCompatActivity {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
                             if (data != null) {
+                                RecipesViewAdapter adapter = new RecipesViewAdapter(getApplicationContext(),recipes);
+
                                 Recipe newRecipe = data.getParcelableExtra("new_recipe");
                                 recipeAdapter.addRecipe(newRecipe);
+                                recipesView.setAdapter(recipeAdapter);
                             }
                         }
                     }

@@ -1,6 +1,7 @@
 package com.example.androidproject;
 
-import android.app.Activity;
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -66,11 +67,10 @@ public class RecipeDetailsFragment extends Fragment {
         favorite = view.findViewById(R.id.isFavorite);
         button_loadImage = view.findViewById(R.id.button_load);
         button_takeImage = view.findViewById(R.id.button_take);
-
         loadImageResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getResultCode() == RESULT_OK) {
                         if (result.getData() != null) {
                             Uri selection = result.getData().getData();
                             Glide.with(requireActivity()).load(selection).centerCrop().into(recipeImage);
@@ -106,7 +106,7 @@ public class RecipeDetailsFragment extends Fragment {
         takeImageResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getResultCode() == RESULT_OK) {
                         Glide.with(requireActivity()).load(currentimagePath).centerCrop().into(recipeImage);
                         Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show();
                         recipe.setImagePath(currentimagePath);
@@ -161,5 +161,4 @@ public class RecipeDetailsFragment extends Fragment {
         currentimagePath = image.getAbsolutePath();
         return image;
     }
-
 }

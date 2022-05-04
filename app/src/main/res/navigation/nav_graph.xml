@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_recipe_details" >
         <action
             android:id="@+id/action_recipeDetailsFragment_to_recipeIngredientsFragment"
-            app:destination="@id/recipeIngredientsFragment" />
+            app:destination="@id/recipeIngredientsFragment"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/recipeIngredientsFragment"
@@ -21,7 +22,11 @@
         tools:layout="@layout/fragment_recipe_ingredients" >
         <action
             android:id="@+id/action_recipeIngredientsFragment_to_recipeInstructionsFragment"
-            app:destination="@id/recipeInstructionsFragment" />
+            app:destination="@id/recipeInstructionsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim" />
         <argument
             android:name="recipe"
             app:argType="com.example.androidproject.Recipe" />

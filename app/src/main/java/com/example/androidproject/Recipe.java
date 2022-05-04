@@ -14,8 +14,8 @@ public class Recipe implements Parcelable {
     private int id;
     private String imagePath;
     private boolean isFavorite;
-    private List<Ingredients> ingredients;
-    private List<Instructions> instructions;
+    private List<String> ingredients;
+    private List<String> instructions;
 
     // constructors
     public Recipe() {
@@ -38,7 +38,7 @@ public class Recipe implements Parcelable {
         this.isFavorite = isFavorite;
     }
 
-    public Recipe(String name, String category, int id, String imagePath, List<Ingredients> ingredients, List<Instructions> instructions) {
+    public Recipe(String name, String category, int id, String imagePath, List<String> ingredients, List<String> instructions) {
         this.name = name;
         this.category = category;
         this.id = id;
@@ -104,19 +104,19 @@ public class Recipe implements Parcelable {
         this.imagePath = imagePath;
     }
 
-    public List<Ingredients> getIngredients() {
+    public List<String> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredients> ingredients) {
+    public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public List<Instructions> getInstructions() {
+    public List<String> getInstructions() {
         return instructions;
     }
 
-    public void setInstructions(List<Instructions> instructions) {
+    public void setInstructions(List<String> instructions) {
         this.instructions = instructions;
     }
 

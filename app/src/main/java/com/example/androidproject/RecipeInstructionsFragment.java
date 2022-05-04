@@ -53,11 +53,13 @@ public class RecipeInstructionsFragment extends Fragment {
         lv_instructions.setAdapter(listAdapter);
 
         button.setOnClickListener(v -> {
-            if(recipe.getInstructions() != null){
-                //dbHelperSingleton.addRecipe(recipe);
-                requireActivity().finish();
+            if(!instructions.isEmpty()){
+                //recipe.setInstructions(instructions);
+                DBHelperSingleton.getInstance(getContext()).addRecipe(recipe);
+                getActivity().finish();
+            } else {
+                Toast.makeText(getContext(), "Please enter at least one instruction", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(getContext(), "Please enter at least one instruction", Toast.LENGTH_SHORT).show();
         });
 
         btn_add.setOnClickListener(new View.OnClickListener() {
