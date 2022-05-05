@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent data = result.getData();
                             if (data != null) {
                                 Recipe newRecipe = data.getParcelableExtra("new_recipe");
-                                recipeAdapter.addRecipe(newRecipe);
+                                recipeAdapter.addRecipe(dbHelperSingleton);
                                 recipesView.smoothScrollToPosition(recipeAdapter.getItemCount());
                             }
                         }

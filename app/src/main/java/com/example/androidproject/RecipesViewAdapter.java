@@ -24,7 +24,7 @@ import java.util.ArrayList;
  *   and start the activity on onBindViewHolder() method when an item is clicked */
 
 public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.ViewHolder> {
-    private final ArrayList<Recipe> recipes;
+    private ArrayList<Recipe> recipes;
     private final Context context;
     private DBHelperSingleton dbHelperSingleton;
     ActivityResultLauncher<Intent> reciepeModifyResultLauncher;
@@ -94,9 +94,9 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
         return recipes.size();
     }
 
-    public void addRecipe(Recipe recipe) {
-        recipes.add(recipe);
-        notifyItemInserted(getItemCount());
+    public void addRecipe(DBHelperSingleton dbHelperSingleton) {
+        recipes = (ArrayList<Recipe>) dbHelperSingleton.getRecipes();
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
