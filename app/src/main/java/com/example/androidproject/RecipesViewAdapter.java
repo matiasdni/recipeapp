@@ -24,8 +24,8 @@ import java.util.ArrayList;
  *   and start the activity on onBindViewHolder() method when an item is clicked */
 
 public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.ViewHolder> {
-    private ArrayList<Recipe> recipes;
-    private Context context;
+    private final ArrayList<Recipe> recipes;
+    private final Context context;
     private DBHelperSingleton dbHelperSingleton;
     ActivityResultLauncher<Intent> reciepeModifyResultLauncher;
 
@@ -44,14 +44,14 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        // get recipe name and thumbnail to cards
+        // get recipe names and images to cards
         holder.txtRecipeName.setText(recipes.get(position).getName());
         Glide.with(context)
                 .asBitmap()
                 .load(recipes.get(position).getImagePath())
                 .centerCrop()
                 .into(holder.imageRecipe);
-        // listen for card click and open recipe details activity
+        // listen for card clicks and open recipe info activity
         holder.parent.setOnClickListener(view -> {
             Intent intent = new Intent(this.context, RecipeInfo.class);
             /*TODO  getting the recipe name and image to RecipeInfo (Not working correctly) */
@@ -61,11 +61,14 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
             /* TODO: Create new activity for displaying the clicked recipe (Done) */
             Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
         });
+        // listen for popup menu clicks
         holder.ibPopupMenu.setOnClickListener(view -> {
+            // inflate popup menu and show it to the user
             PopupMenu popupMenu = new PopupMenu(context, holder.ibPopupMenu);
             popupMenu.inflate(R.menu.cardpopup_menu);
             popupMenu.show();
-            popupMenu.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) menuItem -> {
+            // listen for popup menu clicks and response to it
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()) {
                     case R.id.menu_modify_recipe:
                         Intent intent = new Intent(context, RecipeDetailsActivity.class);
@@ -73,9 +76,10 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
                         MainActivity.reciepeAddResultLauncher.launch(intent);
                         break;
                     case R.id.menu_delete_recipe:
-                        recipes.remove(recipes.get(position));
-                        notifyItemRemoved(position);
+                        // delete recipe from database and recycler view
                         DBHelperSingleton.getInstance(view.getContext()).deleteRecipe(recipes.get(position));
+                        recipes.remove(recipes.get(position));
+                        notifyDataSetChanged();
                         break;
                     default:
                         break;
@@ -91,11 +95,8 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
     }
 
     public void addRecipe(Recipe recipe) {
-        int poschanged = recipes.size();
         recipes.add(recipe);
-        notifyItemInserted(poschanged);
-        notifyDataSetChanged();
-        notifyItemInserted(recipes.size());
+        notifyItemInserted(getItemCount());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

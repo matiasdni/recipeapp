@@ -50,9 +50,7 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_recipe_details, container, false);
-
     }
 
     @Override
@@ -67,6 +65,7 @@ public class RecipeDetailsFragment extends Fragment {
         favorite = view.findViewById(R.id.isFavorite);
         button_loadImage = view.findViewById(R.id.button_load);
         button_takeImage = view.findViewById(R.id.button_take);
+
         loadImageResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -92,15 +91,18 @@ public class RecipeDetailsFragment extends Fragment {
 
         fButton.setOnClickListener(
                 view1 -> {
-                    recipe.setName(recipeName.getText().toString());
-                    recipe.setCategory(recipeCategory.getText().toString());
-                    // todo: implement glide etc
-                    // recipe.setImagePath();
-                    recipe.setFavorite(favorite.isChecked());
-                    NavDirections action =
-                            RecipeDetailsFragmentDirections
-                                    .actionRecipeDetailsFragmentToRecipeIngredientsFragment(recipe);
-                    navController.navigate(action);
+                    if(recipeName.getText().toString().isEmpty() && recipeCategory.getText().toString().isEmpty()) {
+                        Toast.makeText(getContext(), "Please enter name and category", Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        recipe.setName(recipeName.getText().toString());
+                        recipe.setCategory(recipeCategory.getText().toString());
+                        recipe.setFavorite(favorite.isChecked());
+                        NavDirections action =
+                                RecipeDetailsFragmentDirections
+                                        .actionRecipeDetailsFragmentToRecipeIngredientsFragment(recipe);
+                        navController.navigate(action);
+                    }
                 });
 
         takeImageResultLauncher = registerForActivityResult(
@@ -114,8 +116,6 @@ public class RecipeDetailsFragment extends Fragment {
                 }
         );
 
-
-//
 //        // onclick listeners
         button_takeImage.setOnClickListener(view12 -> takeImageForResult());
 

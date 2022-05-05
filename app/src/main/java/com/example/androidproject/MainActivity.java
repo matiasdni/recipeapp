@@ -28,22 +28,22 @@ public class MainActivity extends AppCompatActivity {
     private static final String ACTION_MODIFY = "modify";
 
     // references to components
-    private static RecyclerView recipesView;
+    private RecyclerView recipesView;
     DBHelperSingleton dbHelperSingleton;
-    FloatingActionButton button_recipeAdd;
-
+    FloatingActionButton buttonRecipeAdd;
+    RecipesViewAdapter recipeAdapter;
     static final int ADD_NEW_RECIPE = 1;
     static ActivityResultLauncher<Intent> reciepeAddResultLauncher;
-    RecipesViewAdapter recipeAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         recipesView = findViewById(R.id.view_recipes);
-        button_recipeAdd = findViewById(R.id.button_recipeAdd);
+        buttonRecipeAdd = findViewById(R.id.button_recipeAdd);
         dbHelperSingleton = DBHelperSingleton.getInstance(this);
 
+        // initialize recycler view
         ArrayList<Recipe> recipes = new ArrayList<>(dbHelperSingleton.getRecipes());
         recipeAdapter = new RecipesViewAdapter(this, recipes);
         recipesView.setAdapter(recipeAdapter);
@@ -57,18 +57,16 @@ public class MainActivity extends AppCompatActivity {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
                             if (data != null) {
-                                RecipesViewAdapter adapter = new RecipesViewAdapter(getApplicationContext(),recipes);
-
                                 Recipe newRecipe = data.getParcelableExtra("new_recipe");
                                 recipeAdapter.addRecipe(newRecipe);
-                                recipesView.setAdapter(recipeAdapter);
+                                recipesView.smoothScrollToPosition(recipeAdapter.getItemCount());
                             }
                         }
                     }
                 });
 
         // Onclick listener for add recipe button
-        button_recipeAdd.setOnClickListener(view -> {
+        buttonRecipeAdd.setOnClickListener(view -> {
             reciepeAddForResult();
         });
     }
@@ -78,17 +76,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(ACTION_NEW, 0);
         reciepeAddResultLauncher.launch(intent);
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == ADD_NEW_RECIPE && resultCode == RESULT_OK) {
-//            //Recipe newRecipe = data.getExtras().get("new_recipe");
-//            Recipe newRecipe = data.getParcelableExtra("new_recipe");
-//            // deal with the item yourself
-//            updateRecipesView(this);
-//        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,14 +96,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
-
         return super.onOptionsItemSelected(item);
-
-
     }
-
-
-
-
 }

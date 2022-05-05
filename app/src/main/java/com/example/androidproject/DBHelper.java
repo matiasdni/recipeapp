@@ -66,11 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_IMAGE_PATH, recipe.getImagePath());
 
         long insert = database.insert(RECIPE_TABLE, null, contentValues);
-        if (insert == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return insert != -1;
     }
 
     public boolean deleteRecipe(Recipe recipe) {
@@ -81,12 +77,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 COLUMN_RECIPE_ID + " = " +
                 recipe.getId();
         Cursor cursor = database.rawQuery(queryString, null);
-
-        if (cursor.moveToFirst()) {
-            return true;
-        } else {
-            return false;
-        }
+        return cursor.moveToFirst();
     }
 
     public int getRecipeID(Recipe recipe) {
@@ -115,7 +106,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //ArrayList for holding recipes
     public ArrayList<Recipe> getRecipes() {
         ArrayList<Recipe> recipes = new ArrayList<>();
-        recipes.add(new Recipe(1, "Lemon Chicken", "Food", true, ""));
+        //recipes.add(new Recipe(1, "Lemon Chicken", "Food", true, ""));
 
 
         // retrieve data from database
@@ -131,7 +122,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 String category = cursor.getString(2);
                 boolean favoriteRecipe = cursor.getInt(3) == 1;
                 String imagePath = cursor.getString(4);
-
                 Recipe newRecipe = new Recipe(recipeID, recipeName, category, favoriteRecipe, imagePath);
                 recipes.add(newRecipe);
             } while (cursor.moveToNext());

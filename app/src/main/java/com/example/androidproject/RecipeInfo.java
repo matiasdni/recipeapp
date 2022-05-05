@@ -26,8 +26,8 @@ public class RecipeInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_info);
-        image_recipe = (ImageView) findViewById(R.id.image_recipe);
-        recipeName = (TextView) findViewById(R.id.txt_name2);
+        image_recipe = findViewById(R.id.image_recipe);
+        recipeName = findViewById(R.id.txt_name2);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             int resName = bundle.getInt("resName");

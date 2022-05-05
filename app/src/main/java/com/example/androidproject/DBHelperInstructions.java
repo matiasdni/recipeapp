@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SQLite Helper Class, contains necessary methods for database management
@@ -51,72 +52,49 @@ public class DBHelperInstructions extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
     }
 
-    // This method is called when a new recipe has been created and we need to link instruction
-    // to correct recipe id
-    public boolean addInstruction(Instructions instructions) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(COLUMN_RECIPE_ID, instructions.getRecipeId());
-        contentValues.put(COLUMN_INSTRUCTION_NAME, instructions.getBody());
-
-        long insert = database.insert(INSTRUCTIONS_TABLE, null, contentValues);
-        if (insert == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-  /*  public ArrayList<Instructions> getInstructions(Recipe recipe) {
-        ArrayList<Instructions> instructions = new ArrayList<>();
-
-        // code that gets all instructions
-
-        return instructions;
-    }*/
-
-
-    public boolean deleteInstructions(Instructions instructions) {
+    public boolean deleteInstructions(Recipe recipe) {
         // deletes instructions by id
         SQLiteDatabase database = this.getWritableDatabase();
         String queryString = "DELETE FROM " +
                 INSTRUCTIONS_TABLE + " WHERE " +
-                COLUMN_INSTRUCTION_ID + " = " +
-                instructions.getId();
+                COLUMN_RECIPE_ID + " = " +
+                recipe.getId();
         Cursor cursor = database.rawQuery(queryString, null);
 
-        if (cursor.moveToFirst()) {
-            return true;
-        } else {
-            return false;
-        }
+        return cursor.moveToFirst();
     }
 
-    public ArrayList<Instructions> getInstructions(Recipe recipe) {
-        ArrayList<Instructions> instructions = new ArrayList<>();
-        //instructions.add(new Recipe("name", "category", 1, "imagePath", ingredients, List<Instructions>));
-        // retrieve data from database
-        String queryString = "SELECT * FROM " + INSTRUCTIONS_TABLE;
+    public List<String> getInstructions(int recipe) {
+        ArrayList<String> ingredientsList = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " +
+                INSTRUCTIONS_TABLE + " WHERE " +
+                COLUMN_INSTRUCTION_ID + " = " + recipe;
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
 
         if (cursor.moveToFirst()) {
-            // loop through the database and create recipes
             do {
-                int recipeID = cursor.getInt(0);
-                String Body = cursor.getString(1);
-                int Id = cursor.getInt(2);
-
-
-                Instructions newInstructions = new Instructions(recipeID, Body, Id);
-                instructions.add(newInstructions);
+                if(cursor.getInt(2) == recipe)
+                    ingredientsList.add(cursor.getString(1));
             } while (cursor.moveToNext());
         }
 
         // close cursor and database, return recipes
         cursor.close();
         database.close();
-        return instructions;
+        return ingredientsList;
+    }
+
+    public void addInstructions(Recipe recipe) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        int i = 0;
+        do {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_INSTRUCTION_NAME, recipe.getIngredients().get(i));
+            contentValues.put(COLUMN_RECIPE_ID, recipe.getId());
+            database.insert(INSTRUCTIONS_TABLE, null, contentValues);
+            ++i;
+        } while (i < recipe.getInstructions().size());
     }
 }

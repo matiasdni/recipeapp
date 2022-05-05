@@ -20,7 +20,6 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeIngredientsFragment extends Fragment {
@@ -48,7 +47,7 @@ public class RecipeIngredientsFragment extends Fragment {
         et_ingredient = view.findViewById(R.id.et_ingedient);
         lv_ingredients = view.findViewById(R.id.lv_ingredients);
         recipe = RecipeIngredientsFragmentArgs.fromBundle(getArguments()).getRecipe();
-        ingredients = new ArrayList<>();
+        ingredients = recipe.getIngredients();
 
         // if getingredients is null user is creating a new recipe
         listAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ingredients);
@@ -66,21 +65,27 @@ public class RecipeIngredientsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String ingredient;
-                try {
-                    ingredient = et_ingredient.getText().toString();
-                    ingredients.add(ingredient);
-                    Toast.makeText(getContext(), ingredient + " added.", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Toast.makeText(getContext(), "Error creating a customer", Toast.LENGTH_SHORT).show();
+                if(et_ingredient.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Can't read your mind buddy", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        ingredient = et_ingredient.getText().toString();
+                        ingredients.add(ingredient);
+                        Toast.makeText(getContext(), ingredient + " added.", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "error on adding ingredient", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                    et_ingredient.getText().clear();
+                    updateIngredients(ingredients);
                 }
-                et_ingredient.getText().clear();
-                updateIngredients(ingredients);
             }
         });
 
         button.setOnClickListener(view1 -> {
-            if (recipe.getIngredients() == null) {
-                // error handling
+            if (ingredients.isEmpty()) {
+                Toast.makeText(getContext(), "Please add at least one ingredient", Toast.LENGTH_SHORT)
+                        .show();
             } else {
                 NavDirections action = RecipeIngredientsFragmentDirections
                         .actionRecipeIngredientsFragmentToRecipeInstructionsFragment(recipe);

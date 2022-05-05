@@ -15,23 +15,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/ib_popup_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="10dp"
-            android:background="@null"
-            android:src="@drawable/ic_action_more_vert"
-            app:tint="@color/white" />
-
         <ImageView
+            android:layout_below="@id/ib_popup_menu"
             android:id="@+id/image_recipe"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/recipe_image"
             android:src="@mipmap/ic_launcher" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_popup_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:background="@null"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_action_more_vert"
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/txt_name"

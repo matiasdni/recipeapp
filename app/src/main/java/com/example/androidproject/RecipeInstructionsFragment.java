@@ -1,5 +1,6 @@
 package com.example.androidproject;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeInstructionsFragment extends Fragment {
@@ -47,14 +47,16 @@ public class RecipeInstructionsFragment extends Fragment {
         et_instruction = view.findViewById(R.id.et_ingedient);
         lv_instructions = view.findViewById(R.id.lv_ingredients);
         recipe = RecipeIngredientsFragmentArgs.fromBundle(getArguments()).getRecipe();
-        instructions = new ArrayList<>();
+        instructions = recipe.getInstructions();
 
         listAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, instructions);
         lv_instructions.setAdapter(listAdapter);
 
         button.setOnClickListener(v -> {
             if(!instructions.isEmpty()){
-                //recipe.setInstructions(instructions);
+                recipe.setInstructions(instructions);
+                // pass the recipe to the activity
+                recipePasser.onRecipePass(recipe);
                 DBHelperSingleton.getInstance(getContext()).addRecipe(recipe);
                 getActivity().finish();
             } else {
@@ -66,15 +68,19 @@ public class RecipeInstructionsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String ingredient;
-                try {
-                    ingredient = et_instruction.getText().toString();
-                    instructions.add(ingredient);
-                    Toast.makeText(getContext(), ingredient + " added.", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Toast.makeText(getContext(), "Error creating a customer", Toast.LENGTH_SHORT).show();
+                if(et_instruction.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Can't read your mind buddy", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        ingredient = et_instruction.getText().toString();
+                        instructions.add(ingredient);
+                        Toast.makeText(getContext(), ingredient + " added.", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Error creating a customer", Toast.LENGTH_SHORT).show();
+                    }
+                    et_instruction.getText().clear();
+                    updateIngredients(instructions);
                 }
-                et_instruction.getText().clear();
-                updateIngredients(instructions);
             }
         });
 
@@ -92,4 +98,15 @@ public class RecipeInstructionsFragment extends Fragment {
         listAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ingredients);
         lv_instructions.setAdapter(listAdapter);
     }
+
+    public interface OnRecipePass {
+        public void onRecipePass(Recipe recipe);
+    }
+    OnRecipePass recipePasser;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        recipePasser = (OnRecipePass) context;
+    }
+
 }

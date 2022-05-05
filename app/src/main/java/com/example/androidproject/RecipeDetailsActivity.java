@@ -1,5 +1,6 @@
 package com.example.androidproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +11,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class RecipeDetailsActivity extends AppCompatActivity {
+public class RecipeDetailsActivity extends AppCompatActivity implements RecipeInstructionsFragment.OnRecipePass {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -42,6 +43,19 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         });
+    }
+
+    @Override
+    public void finish() {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("new_recipe", newRecipe);
+            setResult(RESULT_OK, returnIntent);
+            super.finish();
+    }
+
+    @Override
+    public void onRecipePass(Recipe recipe) {
+        newRecipe = recipe;
     }
 
 }

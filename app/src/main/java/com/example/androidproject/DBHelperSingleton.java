@@ -8,10 +8,10 @@ import java.util.List;
 
 public class DBHelperSingleton {
 
-    private Context context;
-    private DBHelper dbHelper;
-    private DBHelperIngredients ingredientsHelper;
-    private DBHelperInstructions dbHelperInstructions;
+    private final Context context;
+    private final DBHelper dbHelper;
+    private final DBHelperIngredients ingredientsHelper;
+    private final DBHelperInstructions dbHelperInstructions;
     private static DBHelperSingleton ourInstance;
 
     public static DBHelperSingleton getInstance(Context context) {
@@ -33,11 +33,9 @@ public class DBHelperSingleton {
 
     public void addRecipe(Recipe recipe) {
         // success
-        if (dbHelper.addRecipe(recipe)) {
-            Toast.makeText(context, "Recipe added", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Adding recipe failed", Toast.LENGTH_SHORT).show();
-        }
+        dbHelper.addRecipe(recipe);
+        ingredientsHelper.addIngredients(recipe);
+        dbHelperInstructions.addInstructions(recipe);
     }
 
     public int getRecipeID(Recipe recipe) {
@@ -45,37 +43,25 @@ public class DBHelperSingleton {
     }
 
     public void deleteRecipe(Recipe recipe) {
-        // success
-        if (dbHelper.deleteRecipe(recipe)) {
-            Toast.makeText(context, "Recipe deleted successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Recipe deletion failed", Toast.LENGTH_SHORT).show();
-        }
+        dbHelper.deleteRecipe(recipe);
+        dbHelperInstructions.deleteInstructions(recipe);
+        ingredientsHelper.deleteIngredients(recipe);
+        Toast.makeText(context, "Recipe deleted", Toast.LENGTH_SHORT).show();
     }
 
     // retrieves recipes from database
     public List<Recipe> getRecipes() {
-        return dbHelper.getRecipes();
+        try {
+            ArrayList<Recipe> recipes = dbHelper.getRecipes();
+            int i = 0;
+            do {
+                recipes.get(i).setIngredients(ingredientsHelper.getIngredients(recipes.get(i).getId()));
+                recipes.get(i).setInstructions(dbHelperInstructions.getInstructions(recipes.get(i).getId()));
+                ++i;
+            } while (i < recipes.size());
+            return recipes;
+        } catch (IndexOutOfBoundsException i) {
+            return dbHelper.getRecipes();
+        }
     }
-
-    // retrieves ingredients and instructions of a specific recipe from database
-    public ArrayList<Ingredients> getIngredients(Recipe recipe) {
-        return ingredientsHelper.getIngredients(recipe);
-    }
-
-    public ArrayList<Instructions> getInstructions(Recipe recipe) {
-        return dbHelperInstructions.getInstructions(recipe);
-    }
-
-
-
-    // setIngredients
-
-    }
-
-    ///setInstructions
-
-
-
-
-
+}
