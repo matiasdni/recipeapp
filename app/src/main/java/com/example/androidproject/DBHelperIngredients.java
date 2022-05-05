@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * SQLite Helper Class, contains necessary methods for database management
  *
- * @author Matias Niemelä
+ * @author Matias Niemelä and Ella Sigvart
  * @version 1.0 4/2022
  */
 

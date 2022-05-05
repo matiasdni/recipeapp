@@ -5,6 +5,13 @@ package com.example.androidproject;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ *
+ *
+ * @author Ella Sigvart
+ * @version 4/2022
+ */
+
 public class Ingredients implements Parcelable {
     private String name;
     private int id;
