@@ -4,9 +4,15 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Recipe.
+ * @author Matias Niemelä
+ */
 public class Recipe implements Parcelable {
 
     private String name;
@@ -17,12 +23,22 @@ public class Recipe implements Parcelable {
     private List<String> ingredients;
     private List<String> instructions;
 
-    // constructors
+    /**
+     * Instantiates a new Recipe.
+     */
     public Recipe() {
         instructions = new ArrayList<>();
         ingredients = new ArrayList<>();
     }
 
+    /**
+     * Instantiates a new Recipe.
+     *
+     * @param id         the recipe id
+     * @param name       the name
+     * @param category   the category
+     * @param isFavorite is favorite
+     */
     public Recipe(int id, String name, String category, boolean isFavorite) {
         this.name = name;
         this.category = category;
@@ -30,6 +46,15 @@ public class Recipe implements Parcelable {
         this.isFavorite = isFavorite;
     }
 
+    /**
+     * Instantiates a new Recipe.
+     *
+     * @param id         the id
+     * @param name       the name
+     * @param category   the category
+     * @param isFavorite is favorite
+     * @param imagePath  the image path
+     */
     public Recipe(int id, String name, String category, boolean isFavorite, String imagePath) {
         this.name = name;
         this.category = category;
@@ -38,6 +63,16 @@ public class Recipe implements Parcelable {
         this.isFavorite = isFavorite;
     }
 
+    /**
+     * Instantiates a new Recipe.
+     *
+     * @param name         the name
+     * @param category     the category
+     * @param id           the id
+     * @param imagePath    the image path
+     * @param ingredients  the ingredients
+     * @param instructions the instructions
+     */
     public Recipe(String name, String category, int id, String imagePath, List<String> ingredients, List<String> instructions) {
         this.name = name;
         this.category = category;
@@ -47,6 +82,11 @@ public class Recipe implements Parcelable {
         this.instructions = instructions;
     }
 
+    /**
+     * Instantiates a new Recipe from parcel.
+     *
+     * @param in the in
+     */
     protected Recipe(Parcel in) {
         name = in.readString();
         category = in.readString();
@@ -59,6 +99,9 @@ public class Recipe implements Parcelable {
         }
     }
 
+    /**
+     * The constant CREATOR which creates a parcel from recipe.
+     */
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
         public Recipe createFromParcel(Parcel in) {
@@ -71,63 +114,133 @@ public class Recipe implements Parcelable {
         }
     };
 
-    // getters and setters
+    /**
+     * Gets recipe name.
+     *
+     * @return the recipe name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets recipe name.
+     *
+     * @param name the recipe name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets recipe category.
+     *
+     * @return the recipe category
+     */
     public String getCategory() {
         return category;
     }
 
+    /**
+     * Sets category.
+     *
+     * @param category the recipe category
+     */
     public void setCategory(String category) {
         this.category = category;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the recipe id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the recipe id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Gets image path.
+     *
+     * @return the recipe image path
+     */
     public String getImagePath() {
         return imagePath;
     }
 
+    /**
+     * Sets image path.
+     *
+     * @param imagePath the recipe image path
+     */
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
+    /**
+     * Gets ingredients.
+     *
+     * @return the recipe ingredients list
+     */
     public List<String> getIngredients() {
         return ingredients;
     }
 
+    /**
+     * Sets ingredients.
+     *
+     * @param ingredients the recipe ingredients list
+     */
     public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
     }
 
+    /**
+     * Gets instructions.
+     *
+     * @return the recipe instructions list
+     */
     public List<String> getInstructions() {
         return instructions;
     }
 
+    /**
+     * Sets instructions.
+     *
+     * @param instructions the recipe instructions list
+     */
     public void setInstructions(List<String> instructions) {
         this.instructions = instructions;
     }
 
+    /**
+     * Is favorite boolean.
+     *
+     * @return the boolean
+     */
     public boolean isFavorite() {
         return isFavorite;
     }
 
+    /**
+     * Sets favorite.
+     *
+     * @param favorite true or false
+     */
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Recipe{" +

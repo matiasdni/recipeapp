@@ -11,22 +11,38 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * SQLite Helper Class, contains necessary methods for database management
  *
  * @author Matias Niemelä and Ella Sigvart
  * @version 1.0 4/2022
  */
-
-
 public class DBHelperIngredients extends SQLiteOpenHelper {
 
-    // ingredients.db config
+    /**
+     * The constant INGREDIENTS_TABLE.
+     */
+// ingredients.db config
     public static final String INGREDIENTS_TABLE = "INGREDIENTS_TABLE";
+    /**
+     * The constant COLUMN_INGREDIENT_NAME.
+     */
     public static final String COLUMN_INGREDIENT_NAME = "INGREDIENT_NAME";
+    /**
+     * The constant COLUMN_RECIPE_ID.
+     */
     public static final String COLUMN_RECIPE_ID = "RECIPE_ID";
+    /**
+     * The constant COLUMN_INGREDIENT_ID.
+     */
     public static final String COLUMN_INGREDIENT_ID = "ID";
 
+    /**
+     * Instantiates a new Db helper ingredients.
+     *
+     * @param context the context
+     */
     public DBHelperIngredients(@Nullable Context context) {
         super(context, "ingredients.db", null, 1);
     }
@@ -45,8 +61,15 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
     // called when database version changes, prevents app breaking due to database design change
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        // no need at this time
     }
-    // Get
+
+    /**
+     * Gets ingredients.
+     *
+     * @param recipeID the recipe id which ingredients need to be retrieved from database.
+     * @return the list of ingredients
+     */
     public List<String> getIngredients(int recipeID) {
         ArrayList<String> ingredientsList = new ArrayList<>();
 
@@ -68,6 +91,12 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
         return ingredientsList;
     }
 
+    /**
+     * Add ingredient boolean.
+     *
+     * @param instructions the instructions
+     * @return the boolean
+     */
     public boolean addIngredient(Instructions instructions) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -79,8 +108,14 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
         return insert != -1;
     }
 
+    /**
+     * Delete ingredient boolean.
+     *
+     * @param ingredients the ingredients
+     * @return the boolean
+     */
     public Boolean deleteIngredient(Ingredients ingredients) {
-    // deletes ingredients by id
+        // deletes ingredients by id
         SQLiteDatabase database = this.getWritableDatabase();
         String queryString = "DELETE FROM " +
                 INGREDIENTS_TABLE + " WHERE " +
@@ -91,34 +126,44 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
         return cursor.moveToFirst();
     }
 
+    /**
+     * Gets ingredients.
+     *
+     * @param recipe the recipe
+     * @return the ingredients
+     */
     public List<Ingredients> getIngredients(Recipe recipe) {
         ArrayList<Ingredients> ingredients = new ArrayList<>();
-        //ingredients.add(new recipe("name", "category", 1, Ingredients, List<Ingredients>));
-        // code that gets ingredients
         String queryString = "SELECT * FROM " + INGREDIENTS_TABLE;
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
 
 
-                if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
 
-                    do {
-                        String ingredientName = cursor.getString(1);
-                        int recipeID = cursor.getInt(0);
-                        int Id = cursor.getInt(0);
+            do {
+                String ingredientName = cursor.getString(1);
+                int recipeID = cursor.getInt(0);
+                int id = cursor.getInt(0);
 
-                        Ingredients newIngredients = new Ingredients(ingredientName, recipeID, Id);
-                        //Ingredients.add(newIngredients);
-                    } while (cursor.moveToNext());
+                Ingredients newIngredients = new Ingredients(ingredientName, recipeID, id);
+                //Ingredients.add(newIngredients);
+            } while (cursor.moveToNext());
 
-                }
+        }
 
         // close cursor and database, return recipes
         cursor.close();
         database.close();
         return ingredients;
     }
-    // adds recipes ingredients to database
+
+    /**
+     * Add ingredients.
+     *
+     * @param recipe the recipe
+     */
+// adds recipes ingredients to database
     public void addIngredients(Recipe recipe) {
         SQLiteDatabase database = this.getWritableDatabase();
         int i = 0;
@@ -131,6 +176,11 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
         } while (i < recipe.getIngredients().size());
     }
 
+    /**
+     * Delete ingredients.
+     *
+     * @param recipe the recipe
+     */
     public void deleteIngredients(Recipe recipe) {
         SQLiteDatabase database = this.getWritableDatabase();
         String queryString = "DELETE FROM " +
@@ -138,5 +188,6 @@ public class DBHelperIngredients extends SQLiteOpenHelper {
                 COLUMN_RECIPE_ID + " = " +
                 recipe.getId();
         Cursor cursor = database.rawQuery(queryString, null);
+        cursor.moveToFirst();
     }
 }

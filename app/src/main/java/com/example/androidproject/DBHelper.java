@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SQLite Helper Class, contains necessary methods for database management
@@ -16,28 +17,47 @@ import java.util.ArrayList;
  * @author Matias Niemelä
  * @version 1.0 4/2022
  */
- /*TODO:
-        new column for image path (done), ingredients and instructions
- *      Figure out how to store ingredients and instructions in the database
-        figure out how to read the data to classes (done)
-        Implement database to main program
-        addRecipe, onUpgrade, deleteRecipe (done)*/
-
 public class DBHelper extends SQLiteOpenHelper {
 
 
+    /**
+     * The constant RECIPE_TABLE.
+     */
     public static final String RECIPE_TABLE = "RECIPE_TABLE";
+    /**
+     * The constant COLUMN_RECIPE_NAME.
+     */
     public static final String COLUMN_RECIPE_NAME = "RECIPE_NAME";
+    /**
+     * The constant COLUMN_RECIPE_CATEGORY.
+     */
     public static final String COLUMN_RECIPE_CATEGORY = "RECIPE_CATEGORY";
+    /**
+     * The constant COLUMN_FAVORITE_RECIPE.
+     */
     public static final String COLUMN_FAVORITE_RECIPE = "FAVORITE_RECIPE";
+    /**
+     * The constant COLUMN_RECIPE_ID.
+     */
     public static final String COLUMN_RECIPE_ID = "ID";
+    /**
+     * The constant COLUMN_IMAGE_PATH.
+     */
     public static final String COLUMN_IMAGE_PATH = "IMAGE_PATH";
 
+    /**
+     * Instantiates a DBHelper.
+     *
+     * @param context the context
+     */
     public DBHelper(@Nullable Context context) {
         super(context, "recipes.db", null, 1);
     }
 
-    // create database, called when accessing database for the first time
+    /**
+     * create database, called when accessing database for the first time
+     * @param database the database
+     */
     @Override
     public void onCreate(SQLiteDatabase database) {
         String createTableStatement =
@@ -53,9 +73,15 @@ public class DBHelper extends SQLiteOpenHelper {
     // called when database version changes, prevents app breaking due to database design change
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        // no need at this time
     }
 
-    // add recipe to database
+    /**
+     * Add recipe to database.
+     *
+     * @param recipe the recipe to be added
+     * @return the boolean
+     */
     public boolean addRecipe(Recipe recipe) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -69,7 +95,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
-    public boolean deleteRecipe(Recipe recipe) {
+    /**
+     * Delete recipe from database.
+     *
+     * @param recipe the recipe to be deleted
+     */
+    public void deleteRecipe(Recipe recipe) {
         // deletes recipe by id
         SQLiteDatabase database = this.getWritableDatabase();
         String queryString = "DELETE FROM " +
@@ -77,9 +108,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 COLUMN_RECIPE_ID + " = " +
                 recipe.getId();
         Cursor cursor = database.rawQuery(queryString, null);
-        return cursor.moveToFirst();
+        cursor.moveToFirst();
     }
 
+    /**
+     * Gets recipe id.
+     *
+     * @param recipe the recipe which id needs to be retrieved from database
+     * @return the recipe id
+     */
     public int getRecipeID(Recipe recipe) {
         SQLiteDatabase database = this.getReadableDatabase();
         String queryString = "SELECT * FROM " + RECIPE_TABLE;
@@ -90,25 +127,27 @@ public class DBHelper extends SQLiteOpenHelper {
         start going through the database from last to start. Currently it looks for the same
         name and image path and it is enough to find the correct ID for now.
         */
-        if(cursor.moveToLast()){
+        if (cursor.moveToLast()) {
             do {
-                if(recipe.getName().equals(cursor.getString(1)) &&
-                        recipe.getImagePath().equals(cursor.getString(4))){
+                if (recipe.getName().equals(cursor.getString(1)) &&
+                        recipe.getImagePath().equals(cursor.getString(4))) {
                     recipeID = cursor.getInt(0);
                 }
-            } while(cursor.moveToPrevious());
+            } while (cursor.moveToPrevious());
         }
         cursor.close();
         database.close();
         // returns 0 in case the method fails, shouldn't ever happen.
         return recipeID;
     }
-        //ArrayList for holding recipes
-    public ArrayList<Recipe> getRecipes() {
+
+    /**
+     * Gets recipes from database.
+     *
+     * @return the recipes
+     */
+    public List<Recipe> getRecipes() {
         ArrayList<Recipe> recipes = new ArrayList<>();
-        //recipes.add(new Recipe(1, "Lemon Chicken", "Food", true, ""));
-
-
         // retrieve data from database
         String queryString = "SELECT * FROM " + RECIPE_TABLE;
         SQLiteDatabase database = this.getReadableDatabase();
@@ -132,5 +171,4 @@ public class DBHelper extends SQLiteOpenHelper {
         database.close();
         return recipes;
     }
-
 }

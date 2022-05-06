@@ -2,6 +2,7 @@ package com.example.androidproject;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,17 +35,61 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Fragment of RecipeDetailsActivity that is used for adding name, category and image to recipes.
+ *
+ * @author Matias Niemelä
+ */
 public class RecipeDetailsFragment extends Fragment {
 
-    EditText recipeName, recipeCategory;
-    Button button_takeImage, button_loadImage;
+    /**
+     * The Recipe name text field.
+     */
+    EditText recipeName;
+    /**
+     * The Recipe category text field.
+     */
+    EditText recipeCategory;
+    /**
+     * Take image button.
+     */
+    Button buttonTakeImage;
+    /**
+     * Load image button.
+     */
+    Button buttonLoadImage;
+    /**
+     * The Favorite switch.
+     */
     SwitchMaterial favorite;
+    /**
+     * The Recipe image.
+     */
     ImageView recipeImage;
+    /**
+     * Floating action button which takes the user to the next fragment.
+     */
     FloatingActionButton fButton;
+    /**
+     * The navigation controller.
+     */
     NavController navController;
-    ActivityResultLauncher<Intent> takeImageResultLauncher, loadImageResultLauncher;
+    /**
+     * Take image for result launcher.
+     */
+    ActivityResultLauncher<Intent> takeImageResultLauncher;
+    /**
+     * Load image for result launcher.
+     */
+    ActivityResultLauncher<Intent> loadImageResultLauncher;
 
-    String currentimagePath;
+    /**
+     * The Currentimage path.
+     */
+    String currentImagePath;
+    /**
+     * The Recipe.
+     */
     Recipe recipe = new Recipe();
 
     @Override
@@ -56,31 +101,28 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         navController = Navigation.findNavController(view);
         fButton = requireActivity().findViewById(R.id.fab);
         recipeName = view.findViewById(R.id.recipeName);
         recipeCategory = view.findViewById(R.id.recipeCategory);
         recipeImage = view.findViewById(R.id.image_recipe);
         favorite = view.findViewById(R.id.isFavorite);
-        button_loadImage = view.findViewById(R.id.button_load);
-        button_takeImage = view.findViewById(R.id.button_take);
+        buttonLoadImage = view.findViewById(R.id.button_load);
+        buttonTakeImage = view.findViewById(R.id.button_take);
 
         loadImageResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        if (result.getData() != null) {
-                            Uri selection = result.getData().getData();
-                            Glide.with(requireActivity()).load(selection).centerCrop().into(recipeImage);
-                            recipe.setImagePath(selection.getPath());
-                        }
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selection = result.getData().getData();
+                        Glide.with(requireActivity()).load(selection).centerCrop().into(recipeImage);
+                        recipe.setImagePath(selection.getPath());
                     }
                 }
         );
 
         Bundle bundle = new Bundle();
-        if(bundle.get("ACTION") == "modifying") {
+        if (bundle.get("ACTION") == "modifying") {
             recipe = bundle.getParcelable("recipe");
             recipeName.setText(recipe.getName());
             recipeCategory.setText(recipe.getCategory());
@@ -91,7 +133,7 @@ public class RecipeDetailsFragment extends Fragment {
 
         fButton.setOnClickListener(
                 view1 -> {
-                    if(recipeName.getText().toString().isEmpty() && recipeCategory.getText().toString().isEmpty()) {
+                    if (recipeName.getText().toString().isEmpty() && recipeCategory.getText().toString().isEmpty()) {
                         Toast.makeText(getContext(), "Please enter name and category", Toast.LENGTH_SHORT)
                                 .show();
                     } else {
@@ -109,23 +151,27 @@ public class RecipeDetailsFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        Glide.with(requireActivity()).load(currentimagePath).centerCrop().into(recipeImage);
+                        Glide.with(requireActivity()).load(currentImagePath).centerCrop().into(recipeImage);
                         Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show();
-                        recipe.setImagePath(currentimagePath);
+                        recipe.setImagePath(currentImagePath);
                     }
                 }
         );
 
-//        // onclick listeners
-        button_takeImage.setOnClickListener(view12 -> takeImageForResult());
+        // Onclick listeners
+        buttonTakeImage.setOnClickListener(view12 -> takeImageForResult());
 
-        button_loadImage.setOnClickListener(view13 -> {
+        buttonLoadImage.setOnClickListener(view13 -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             loadImageResultLauncher.launch(intent);
         });
 
     }
 
+    /**
+     * Take image for result activity.
+     * Gets image file from createImageFile() method and passes it's URI to image capture activity.
+     */
     public void takeImageForResult() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
@@ -139,26 +185,33 @@ public class RecipeDetailsFragment extends Fragment {
             }
             // Image creation success
             if (imageFile != null) {
-                Uri imageURI = FileProvider.getUriForFile(requireActivity(),
+                Uri imageUri = FileProvider.getUriForFile(requireActivity(),
                         "com.example.androidproject.fileprovider", imageFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 takeImageResultLauncher.launch(intent);
             }
         }
     }
 
-    private File createImageFile() throws IOException {
-        // unique image filename
+    /**
+     * Create image file for storing recipe image.
+     *
+     * @return image file
+     * @throws IOException the io exception
+     */
+    public File createImageFile() throws IOException {
+        // Uses date to get unique image file name
+        @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        String imageFileName = "RECIPE_" + timeStamp + "_";
+        File imageDirectory = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,
                 ".jpg",
-                storageDir
+                imageDirectory
         );
-        // assign image path to variable and return image file
-        currentimagePath = image.getAbsolutePath();
+        // store current image path to class variable
+        currentImagePath = image.getAbsolutePath();
         return image;
     }
 }

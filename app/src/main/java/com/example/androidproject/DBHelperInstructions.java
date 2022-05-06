@@ -17,26 +17,38 @@ import java.util.List;
  * @author Matias Niemelä
  * @version 1.0 4/2022
  */
- /*TODO:
-        new column for image path (done), ingredients and instructions
- *      Figure out how to store ingredients and instructions in the database
-        figure out how to read the data to classes (done)
-        Implement database to main program
-        addRecipe, onUpgrade, deleteRecipe (done)*/
-
 public class DBHelperInstructions extends SQLiteOpenHelper {
 
-    // instructions.db config
+    /**
+     * The constant INSTRUCTIONS_TABLE.
+     */
     public static final String INSTRUCTIONS_TABLE = "INSTRUCTION_TABLE";
+    /**
+     * The constant COLUMN_INSTRUCTION_NAME.
+     */
     public static final String COLUMN_INSTRUCTION_NAME = "INSTRUCTION_NAME";
+    /**
+     * The constant COLUMN_RECIPE_ID.
+     */
     public static final String COLUMN_RECIPE_ID = "RECIPE_ID";
+    /**
+     * The constant COLUMN_INSTRUCTION_ID.
+     */
     public static final String COLUMN_INSTRUCTION_ID = "ID";
 
+    /**
+     * Instantiates a new Db helper instructions.
+     *
+     * @param context the context
+     */
     public DBHelperInstructions(@Nullable Context context) {
         super(context, "instructions.db", null, 1);
     }
 
-    // create database, called when accessing database for the first time
+    /**
+     * create database, called when accessing database for the first time
+     * @param database the database
+     */
     @Override
     public void onCreate(SQLiteDatabase database) {
         String createTableStatement =
@@ -50,9 +62,15 @@ public class DBHelperInstructions extends SQLiteOpenHelper {
     // called when database version changes, prevents app breaking due to database design change
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        // no need to implement at this time
     }
 
-    public boolean deleteInstructions(Recipe recipe) {
+    /**
+     * Delete instructions of a recipe.
+     *
+     * @param recipe the recipe to be deleted
+     */
+    public void deleteInstructions(Recipe recipe) {
         // deletes instructions by id
         SQLiteDatabase database = this.getWritableDatabase();
         String queryString = "DELETE FROM " +
@@ -60,23 +78,29 @@ public class DBHelperInstructions extends SQLiteOpenHelper {
                 COLUMN_RECIPE_ID + " = " +
                 recipe.getId();
         Cursor cursor = database.rawQuery(queryString, null);
-
-        return cursor.moveToFirst();
+        cursor.moveToFirst();
     }
 
-    public List<String> getInstructions(int recipe) {
+    /**
+     * Gets instructions.
+     *
+     * @param recipeId the recipe id
+     * @return the instructions list
+     */
+    public List<String> getInstructions(int recipeId) {
         ArrayList<String> ingredientsList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " +
                 INSTRUCTIONS_TABLE + " WHERE " +
-                COLUMN_INSTRUCTION_ID + " = " + recipe;
+                COLUMN_INSTRUCTION_ID + " = " + recipeId;
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
 
         if (cursor.moveToFirst()) {
             do {
-                if(cursor.getInt(2) == recipe)
+                if (cursor.getInt(2) == recipeId) {
                     ingredientsList.add(cursor.getString(1));
+                }
             } while (cursor.moveToNext());
         }
 
@@ -86,6 +110,11 @@ public class DBHelperInstructions extends SQLiteOpenHelper {
         return ingredientsList;
     }
 
+    /**
+     * Add instructions.
+     *
+     * @param recipe the recipe to be added to database
+     */
     public void addInstructions(Recipe recipe) {
         SQLiteDatabase database = this.getWritableDatabase();
         int i = 0;

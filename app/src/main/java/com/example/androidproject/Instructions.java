@@ -1,9 +1,8 @@
 package com.example.androidproject;
 
 
-
-import android.os.Parcelable;
 import android.os.Parcel;
+import android.os.Parcelable;
 /**
  *
  *

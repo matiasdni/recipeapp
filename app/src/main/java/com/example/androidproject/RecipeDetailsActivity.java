@@ -10,31 +10,36 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 
+/**
+ * Activity for adding new recipes or modifying existing ones.
+ *
+ * @author Matias Niemelä
+ */
 public class RecipeDetailsActivity extends AppCompatActivity implements RecipeInstructionsFragment.OnRecipePass {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private FloatingActionButton fab;
 
-    String currentimagePath;
+    /**
+     * The New recipe.
+     */
     Recipe newRecipe = new Recipe();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
-
         fab = findViewById(R.id.fab);
         tabLayout = findViewById(R.id.tabs);
-
     }
 
     @Override
     public void finish() {
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("new_recipe", newRecipe);
-            setResult(RESULT_OK, returnIntent);
-            super.finish();
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("new_recipe", newRecipe);
+        setResult(RESULT_OK, returnIntent);
+        super.finish();
     }
 
     @Override

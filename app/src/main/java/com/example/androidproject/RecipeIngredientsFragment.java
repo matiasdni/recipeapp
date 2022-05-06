@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,14 +21,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+/**
+ * Fragment of RecipeDetailsActivity that is used for adding instructions to recipes.
+ *
+ * @author Matias Niemelä
+ */
 public class RecipeIngredientsFragment extends Fragment {
 
-    private Recipe recipe;
-    Button btn_add;
-    EditText et_ingredient;
-    ListView lv_ingredients;
-    ArrayAdapter listAdapter;
-    private List<String> ingredients;
+    Recipe recipe;
+    Button btnAdd;
+    EditText etIngredient;
+    ListView listIngredients;
+    ArrayAdapter<String> listAdapter;
+    List<String> ingredients;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,42 +47,29 @@ public class RecipeIngredientsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         NavController navController = Navigation.findNavController(view);
         FloatingActionButton button = requireActivity().findViewById(R.id.fab);
-        btn_add = view.findViewById(R.id.btn_add);
-        et_ingredient = view.findViewById(R.id.et_ingedient);
-        lv_ingredients = view.findViewById(R.id.lv_ingredients);
+        btnAdd = view.findViewById(R.id.btn_add);
+        etIngredient = view.findViewById(R.id.et_ingedient);
+        listIngredients = view.findViewById(R.id.lv_ingredients);
         recipe = RecipeIngredientsFragmentArgs.fromBundle(getArguments()).getRecipe();
         ingredients = recipe.getIngredients();
+        listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ingredients);
+        listIngredients.setAdapter(listAdapter);
 
-        // if getingredients is null user is creating a new recipe
-        listAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ingredients);
-        lv_ingredients.setAdapter(listAdapter);
-
-        Bundle bundle = new Bundle();
-        if (bundle.get("ACTION") == "modifying") {
-            Recipe recipe = bundle.getParcelable("recipe");
-
-            // set list contents
-            recipe.getIngredients();
-        }
-
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String ingredient;
-                if(et_ingredient.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Can't read your mind buddy", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        ingredient = et_ingredient.getText().toString();
-                        ingredients.add(ingredient);
-                        Toast.makeText(getContext(), ingredient + " added.", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        Toast.makeText(getContext(), "error on adding ingredient", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                    et_ingredient.getText().clear();
-                    updateIngredients(ingredients);
+        btnAdd.setOnClickListener(v -> {
+            String ingredient;
+            if (etIngredient.getText().toString().isEmpty()) {
+                Toast.makeText(getContext(), "Can't read your mind buddy", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    ingredient = etIngredient.getText().toString();
+                    ingredients.add(ingredient);
+                    Toast.makeText(getContext(), ingredient + " added.", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "error on adding ingredient", Toast.LENGTH_SHORT)
+                            .show();
                 }
+                etIngredient.getText().clear();
+                updateIngredients(ingredients);
             }
         });
 
@@ -93,19 +84,18 @@ public class RecipeIngredientsFragment extends Fragment {
             }
         });
 
-        lv_ingredients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String clickedItem = (String) adapterView.getItemAtPosition(i);
-                ingredients.remove(clickedItem);
-                updateIngredients(ingredients);
-                Toast.makeText(getContext(), clickedItem + " deleted", Toast.LENGTH_SHORT).show();
-            }
+        listIngredients.setOnItemClickListener((adapterView, view12, i, l) -> {
+            String clickedItem = (String) adapterView.getItemAtPosition(i);
+            ingredients.remove(clickedItem);
+            updateIngredients(ingredients);
+            Toast.makeText(getContext(), clickedItem + " deleted", Toast.LENGTH_SHORT).show();
         });
     }
-
+    /**
+     * updates list view
+     */
     private void updateIngredients(List<String> ingredients) {
-        listAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ingredients);
-        lv_ingredients.setAdapter(listAdapter);
+        listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ingredients);
+        listIngredients.setAdapter(listAdapter);
     }
 }

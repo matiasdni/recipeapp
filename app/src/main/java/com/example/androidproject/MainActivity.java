@@ -9,8 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -21,25 +19,38 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+
 /**
- *
+ * Main activity.
  *
  * @author Matias Niemelä, Ella Sigvart, Kim Rautiainen, Leo Koskimäki
- * @version 4/2022
+ * @version 4 /2022
  */
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String ACTION_NEW = "add_new";
     private static final String ACTION_MODIFY = "modify";
 
-    // references to components
-    private RecyclerView recipesView;
+    /**
+     * The Recipes recycler view.
+     */
+    RecyclerView recipesView;
+    /**
+     * The database helper singleton.
+     */
     DBHelperSingleton dbHelperSingleton;
+    /**
+     * The plus button for adding recipe.
+     */
     FloatingActionButton buttonRecipeAdd;
+    /**
+     * The Recipe recycler view adapter.
+     */
     RecipesViewAdapter recipeAdapter;
-    static final int ADD_NEW_RECIPE = 1;
-    static ActivityResultLauncher<Intent> reciepeAddResultLauncher;
+    /**
+     * The Recipe add result launcher.
+     */
+    static ActivityResultLauncher<Intent> recipeAddResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,33 +66,32 @@ public class MainActivity extends AppCompatActivity {
         recipesView.setAdapter(recipeAdapter);
         recipesView.setLayoutManager(new LinearLayoutManager(this));
 
-        reciepeAddResultLauncher = registerForActivityResult(
+        recipeAddResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getData();
-                            if (data != null) {
-                                Recipe newRecipe = data.getParcelableExtra("new_recipe");
-                                recipeAdapter.addRecipe(dbHelperSingleton);
-                                recipesView.smoothScrollToPosition(recipeAdapter.getItemCount());
-                            }
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Recipe newRecipe = data.getParcelableExtra("new_recipe");
+                            recipeAdapter.addRecipe(dbHelperSingleton);
+                            recipesView.smoothScrollToPosition(recipeAdapter.getItemCount());
                         }
                     }
                 });
 
         // Onclick listener for add recipe button
-        buttonRecipeAdd.setOnClickListener(view -> {
-            reciepeAddForResult();
-        });
+        buttonRecipeAdd.setOnClickListener(view -> reciepeAddForResult());
     }
 
+    /**
+     * Reciepe add for result.
+     */
     public void reciepeAddForResult() {
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
         intent.putExtra(ACTION_NEW, 0);
-        reciepeAddResultLauncher.launch(intent);
+        recipeAddResultLauncher.launch(intent);
     }
+
     // creating menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(example_menu, menu);
         return true;
     }
+
     // using menu options and opening them
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

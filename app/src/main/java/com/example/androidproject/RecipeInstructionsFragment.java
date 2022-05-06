@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,17 +19,45 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+/**
+ * Fragment of RecipeDetailsActivity that is used for adding instructions to recipes.
+ *
+ * @author Matias Niemelä
+ */
 public class RecipeInstructionsFragment extends Fragment {
 
-    private Recipe recipe;
-    DBHelperSingleton dbHelperSingleton;
-    Button btn_add;
-    EditText et_instruction;
-    ListView lv_instructions;
-    ArrayAdapter listAdapter;
-    private List<String> instructions;
-    private static final String TAG_ING = "Ingredient";
-    private static final String TAG_INS = "Instruction";
+    /**
+     * The Recipe the user is creating.
+     */
+    Recipe recipe;
+    /**
+     * The add button that is used for adding new instructions to the recipe.
+     */
+    Button btnAdd;
+    /**
+     * The floating action button used for going to next fragment or finishing activity.
+     */
+    FloatingActionButton fButton;
+    /**
+     * The Edit Text  field for instructions.
+     */
+    EditText etInstruction;
+    /**
+     * The instructions list that contains all the added instructions.
+     */
+    ListView listInstructions;
+    /**
+     * The List adapter.
+     */
+    ArrayAdapter<String> listAdapter;
+    /**
+     * The Instructions for storing all the added instructions.
+     */
+    List<String> instructions;
+    /**
+     * The Recipe passer for passing the recipe to the main activity.
+     */
+    OnRecipePass recipePasser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,71 +69,78 @@ public class RecipeInstructionsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton button = requireActivity().findViewById(R.id.fab);
-        btn_add = view.findViewById(R.id.btn_add);
-        et_instruction = view.findViewById(R.id.et_ingedient);
-        lv_instructions = view.findViewById(R.id.lv_ingredients);
+        fButton = requireActivity().findViewById(R.id.fab);
+        btnAdd = view.findViewById(R.id.btn_add);
+        etInstruction = view.findViewById(R.id.et_ingedient);
+        listInstructions = view.findViewById(R.id.lv_ingredients);
         recipe = RecipeIngredientsFragmentArgs.fromBundle(getArguments()).getRecipe();
         instructions = recipe.getInstructions();
 
-        listAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, instructions);
-        lv_instructions.setAdapter(listAdapter);
+        listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, instructions);
+        listInstructions.setAdapter(listAdapter);
 
-        button.setOnClickListener(v -> {
-            if(!instructions.isEmpty()){
+        fButton.setOnClickListener(v -> {
+            if (!instructions.isEmpty()) {
                 recipe.setInstructions(instructions);
                 // pass the recipe to the activity
                 recipePasser.onRecipePass(recipe);
                 DBHelperSingleton.getInstance(getContext()).addRecipe(recipe);
-                getActivity().finish();
+                requireActivity().finish();
             } else {
                 Toast.makeText(getContext(), "Please enter at least one instruction", Toast.LENGTH_SHORT).show();
             }
         });
-
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String ingredient;
-                if(et_instruction.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Can't read your mind buddy", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        ingredient = et_instruction.getText().toString();
-                        instructions.add(ingredient);
-                        Toast.makeText(getContext(), ingredient + " added.", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        Toast.makeText(getContext(), "Error creating a customer", Toast.LENGTH_SHORT).show();
-                    }
-                    et_instruction.getText().clear();
-                    updateIngredients(instructions);
+        // does error handling, user input validation and adds new ingredient to list view
+        btnAdd.setOnClickListener(v -> {
+            String newIngredient;
+            if (etInstruction.getText().toString().isEmpty()) {
+                Toast.makeText(getContext(), "Can't read your mind buddy", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    newIngredient = etInstruction.getText().toString();
+                    instructions.add(newIngredient);
+                    Toast.makeText(getContext(), newIngredient + " added.", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Error creating a customer", Toast.LENGTH_SHORT).show();
                 }
+                etInstruction.getText().clear();
+                updateInstructionList(instructions);
             }
         });
 
-        lv_instructions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String clickedItem = (String) adapterView.getItemAtPosition(i);
-                instructions.remove(clickedItem);
-                updateIngredients(instructions);
-                Toast.makeText(getContext(), clickedItem + " deleted", Toast.LENGTH_SHORT).show();
-            }
+        listInstructions.setOnItemClickListener((adapterView, view1, i, l) -> {
+            String clickedItem = (String) adapterView.getItemAtPosition(i);
+            instructions.remove(clickedItem);
+            updateInstructionList(instructions);
+            Toast.makeText(getContext(), clickedItem + " deleted", Toast.LENGTH_SHORT).show();
         });
     }
-    private void updateIngredients(List<String> ingredients) {
-        listAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ingredients);
-        lv_instructions.setAdapter(listAdapter);
+
+    /**
+     * updates list view
+     *
+     * @param ingredients the data set to the list
+     */
+    private void updateInstructionList(List<String> ingredients) {
+        listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ingredients);
+        listInstructions.setAdapter(listAdapter);
     }
 
-    public interface OnRecipePass {
-        public void onRecipePass(Recipe recipe);
-    }
-    OnRecipePass recipePasser;
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         recipePasser = (OnRecipePass) context;
     }
 
+    /**
+     * interface for passing recipe to activity
+     */
+    public interface OnRecipePass {
+        /**
+         * On recipe pass.
+         *
+         * @param recipe the recipe passed to the activity
+         */
+        void onRecipePass(Recipe recipe);
+    }
 }

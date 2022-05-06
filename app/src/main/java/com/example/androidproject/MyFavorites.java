@@ -1,10 +1,8 @@
 package com.example.androidproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MyFavorites extends AppCompatActivity {
     // one of menus options

@@ -19,20 +19,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/* TODO: Create new activity for displaying the clicked recipe
- *   and start the activity on onBindViewHolder() method when an item is clicked */
-
+/**
+ * Custom adapter for recycler view that shows recipes in main activity.
+ *
+ * @author Matias Niemelä
+ */
 public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.ViewHolder> {
     private ArrayList<Recipe> recipes;
     private final Context context;
-    private DBHelperSingleton dbHelperSingleton;
+    /**
+     * The Reciepe modify result launcher.
+     */
     ActivityResultLauncher<Intent> reciepeModifyResultLauncher;
 
-    // initialize the dataset of the adapter
-    public RecipesViewAdapter(Context context, ArrayList<Recipe> recipes) {
+    /**
+     * Instantiates a new Recipes view adapter.
+     *
+     * @param context the context
+     * @param recipes the recipes to be added to the recycler view dataset
+     */
+    public RecipesViewAdapter(Context context, List<Recipe> recipes) {
         this.context = context;
-        this.recipes = recipes;
+        this.recipes = (ArrayList<Recipe>) recipes;
     }
 
     @NonNull
@@ -54,11 +64,11 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
         // listen for card clicks and open recipe info activity
         holder.parent.setOnClickListener(view -> {
             Intent intent = new Intent(this.context, RecipeInfo.class);
-            /*TODO  getting the recipe name and image to RecipeInfo (Not working correctly) */
+
             intent.putExtra("resId", R.drawable.ic_image_placeholder);
             intent.putExtra("resName", R.id.txt_name);
             context.startActivity(intent);
-            /* TODO: Create new activity for displaying the clicked recipe (Done) */
+
             Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
         });
         // listen for popup menu clicks
@@ -73,7 +83,7 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
                     case R.id.menu_modify_recipe:
                         Intent intent = new Intent(context, RecipeDetailsActivity.class);
                         intent.putExtra("ACTION", "modify");
-                        MainActivity.reciepeAddResultLauncher.launch(intent);
+                        MainActivity.recipeAddResultLauncher.launch(intent);
                         break;
                     case R.id.menu_delete_recipe:
                         // delete recipe from database and recycler view
@@ -94,17 +104,30 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
         return recipes.size();
     }
 
+    /**
+     * Add recipe.
+     *
+     * @param dbHelperSingleton to update the list from database
+     */
     public void addRecipe(DBHelperSingleton dbHelperSingleton) {
         recipes = (ArrayList<Recipe>) dbHelperSingleton.getRecipes();
         notifyDataSetChanged();
     }
 
+    /**
+     * The type View holder.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtRecipeName;
         private final CardView parent;
         private final ImageView imageRecipe;
         private final ImageButton ibPopupMenu;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param itemView the card view
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             txtRecipeName = itemView.findViewById(R.id.txt_name);
