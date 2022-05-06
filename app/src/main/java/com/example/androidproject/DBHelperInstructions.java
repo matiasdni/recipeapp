@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * SQLite Helper Class, contains necessary methods for database management
  *
- * @author Matias Niemelä
+ * @author Matias Niemelä and Kim Rautiainen
  * @version 1.0 4/2022
  */
 public class DBHelperInstructions extends SQLiteOpenHelper {
@@ -47,6 +47,7 @@ public class DBHelperInstructions extends SQLiteOpenHelper {
 
     /**
      * create database, called when accessing database for the first time
+     *
      * @param database the database
      */
     @Override
@@ -84,34 +85,31 @@ public class DBHelperInstructions extends SQLiteOpenHelper {
     /**
      * Gets instructions.
      *
-     * @param recipeId the recipe id
+     * @param recipe the recipe which instructions need to be retrieved from the database
      * @return the instructions list
      */
-    public List<String> getInstructions(int recipeId) {
-        ArrayList<String> ingredientsList = new ArrayList<>();
+    public List<String> getInstructions(Recipe recipe) {
+        ArrayList<String> instructions = new ArrayList<>();
 
-        String queryString = "SELECT * FROM " +
-                INSTRUCTIONS_TABLE + " WHERE " +
-                COLUMN_INSTRUCTION_ID + " = " + recipeId;
+        String queryString = "SELECT * FROM " + INSTRUCTIONS_TABLE;
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
+        cursor.moveToFirst();
+        do {
+            if (cursor.getInt(2) == recipe.getId()) {
+                instructions.add(cursor.getString(1));
+            }
+        } while (cursor.moveToNext());
 
-        if (cursor.moveToFirst()) {
-            do {
-                if (cursor.getInt(2) == recipeId) {
-                    ingredientsList.add(cursor.getString(1));
-                }
-            } while (cursor.moveToNext());
-        }
 
-        // close cursor and database, return recipes
+        // close cursor and database, return instructions
         cursor.close();
         database.close();
-        return ingredientsList;
+        return instructions;
     }
 
     /**
-     * Add instructions.
+     * Add instructions to database.
      *
      * @param recipe the recipe to be added to database
      */

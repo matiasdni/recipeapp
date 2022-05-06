@@ -79,6 +79,7 @@ public class RecipeInstructionsFragment extends Fragment {
         listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, instructions);
         listInstructions.setAdapter(listAdapter);
 
+        // plus button listener that finishes the activity, does input validation
         fButton.setOnClickListener(v -> {
             if (!instructions.isEmpty()) {
                 recipe.setInstructions(instructions);
@@ -90,6 +91,7 @@ public class RecipeInstructionsFragment extends Fragment {
                 Toast.makeText(getContext(), "Please enter at least one instruction", Toast.LENGTH_SHORT).show();
             }
         });
+
         // does error handling, user input validation and adds new ingredient to list view
         btnAdd.setOnClickListener(v -> {
             String newIngredient;
@@ -108,6 +110,7 @@ public class RecipeInstructionsFragment extends Fragment {
             }
         });
 
+        // list listener for deleting ingredients by clicking them
         listInstructions.setOnItemClickListener((adapterView, view1, i, l) -> {
             String clickedItem = (String) adapterView.getItemAtPosition(i);
             instructions.remove(clickedItem);

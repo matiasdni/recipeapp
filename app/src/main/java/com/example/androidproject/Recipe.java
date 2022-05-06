@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Recipe.
+ * Recipe type for storing recipes
  * @author Matias Niemelä
  */
 public class Recipe implements Parcelable {
@@ -56,6 +56,9 @@ public class Recipe implements Parcelable {
      * @param imagePath  the image path
      */
     public Recipe(int id, String name, String category, boolean isFavorite, String imagePath) {
+        instructions = new ArrayList<>();
+        ingredients = new ArrayList<>();
+
         this.name = name;
         this.category = category;
         this.id = id;
@@ -85,9 +88,13 @@ public class Recipe implements Parcelable {
     /**
      * Instantiates a new Recipe from parcel.
      *
-     * @param in the in
+     * @param in the parcel
      */
     protected Recipe(Parcel in) {
+        ingredients = new ArrayList<>();
+        instructions = new ArrayList<>();
+        in.readStringList(ingredients);
+        in.readStringList(instructions);
         name = in.readString();
         category = in.readString();
         id = in.readInt();
@@ -260,6 +267,8 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeStringList(ingredients);
+        parcel.writeStringList(instructions);
         parcel.writeString(name);
         parcel.writeString(category);
         parcel.writeInt(id);

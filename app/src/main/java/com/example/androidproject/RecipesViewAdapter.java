@@ -61,14 +61,12 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
                 .load(recipes.get(position).getImagePath())
                 .centerCrop()
                 .into(holder.imageRecipe);
+
         // listen for card clicks and open recipe info activity
         holder.parent.setOnClickListener(view -> {
             Intent intent = new Intent(this.context, RecipeInfo.class);
-
-            intent.putExtra("resId", R.drawable.ic_image_placeholder);
-            intent.putExtra("resName", R.id.txt_name);
+            intent.putExtra("recipe", recipes.get(position));
             context.startActivity(intent);
-
             Toast.makeText(context, recipes.get(position).getName() + " Clicked", Toast.LENGTH_SHORT).show();
         });
         // listen for popup menu clicks
@@ -105,7 +103,7 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
     }
 
     /**
-     * Add recipe.
+     * updates the recycler view dataset.
      *
      * @param dbHelperSingleton to update the list from database
      */
@@ -115,7 +113,7 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
     }
 
     /**
-     * The type View holder.
+     * The View holder.
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtRecipeName;

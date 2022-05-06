@@ -55,6 +55,7 @@ public class RecipeIngredientsFragment extends Fragment {
         listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ingredients);
         listIngredients.setAdapter(listAdapter);
 
+        // add button listener, does input validation and updates view
         btnAdd.setOnClickListener(v -> {
             String ingredient;
             if (etIngredient.getText().toString().isEmpty()) {
@@ -73,6 +74,7 @@ public class RecipeIngredientsFragment extends Fragment {
             }
         });
 
+        // listener for plus button that takes the user to the next step, does input validation and changes fragment
         button.setOnClickListener(view1 -> {
             if (ingredients.isEmpty()) {
                 Toast.makeText(getContext(), "Please add at least one ingredient", Toast.LENGTH_SHORT)
@@ -84,6 +86,7 @@ public class RecipeIngredientsFragment extends Fragment {
             }
         });
 
+        // list listener for deleting ingredients by clicking them
         listIngredients.setOnItemClickListener((adapterView, view12, i, l) -> {
             String clickedItem = (String) adapterView.getItemAtPosition(i);
             ingredients.remove(clickedItem);

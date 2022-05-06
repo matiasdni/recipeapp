@@ -80,7 +80,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Add recipe to database.
      *
      * @param recipe the recipe to be added
-     * @return the boolean
+     * @return boolean
      */
     public boolean addRecipe(Recipe recipe) {
         SQLiteDatabase database = this.getWritableDatabase();

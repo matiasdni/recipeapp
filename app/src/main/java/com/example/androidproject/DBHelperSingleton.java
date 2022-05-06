@@ -85,8 +85,8 @@ public class DBHelperSingleton {
             ArrayList<Recipe> recipes = (ArrayList<Recipe>) dbHelper.getRecipes();
             int i = 0;
             do {
-                recipes.get(i).setIngredients(ingredientsHelper.getIngredients(recipes.get(i).getId()));
-                recipes.get(i).setInstructions(dbHelperInstructions.getInstructions(recipes.get(i).getId()));
+                recipes.get(i).setIngredients(ingredientsHelper.getIngredients(recipes.get(i)));
+                recipes.get(i).setInstructions(dbHelperInstructions.getInstructions(recipes.get(i)));
                 ++i;
             } while (i < recipes.size());
             return recipes;
