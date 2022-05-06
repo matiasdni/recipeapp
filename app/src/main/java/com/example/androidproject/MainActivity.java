@@ -21,6 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+/**
+ *
+ *
+ * @author Matias Niemelä, Ella Sigvart, Kim Rautiainen, Leo Koskimäki
+ * @version 4/2022
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(ACTION_NEW, 0);
         reciepeAddResultLauncher.launch(intent);
     }
-
+    // creating menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(example_menu, menu);
         return true;
     }
-
+    // using menu options and opening them
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();

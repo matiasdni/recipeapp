@@ -1,10 +1,15 @@
 package com.example.androidproject;
 
-/*TODO: */
+
 
 import android.os.Parcelable;
 import android.os.Parcel;
-
+/**
+ *
+ *
+ * @author Kim Rautiainen
+ * @version 4/2022
+ */
 public class Instructions implements Parcelable {
 
     private String body;
