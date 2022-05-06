@@ -32,8 +32,8 @@ public class DBHelperSingleton {
     }
 
     public void addRecipe(Recipe recipe) {
-        // success
         dbHelper.addRecipe(recipe);
+        recipe.setId(dbHelper.getRecipeID(recipe));
         ingredientsHelper.addIngredients(recipe);
         dbHelperInstructions.addInstructions(recipe);
     }
