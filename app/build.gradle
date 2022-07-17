@@ -30,7 +30,6 @@ android {
 }
 
 dependencies {
-    compileOnly files("/home/matiasdn/Android/Sdk/platforms/android-32/android.jar")
     implementation 'androidx.navigation:navigation-common:2.4.2'
     def nav_version = "2.4.2"
     // Java language implementation
