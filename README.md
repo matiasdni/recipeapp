@@ -2,7 +2,7 @@
 Recipe App is a simple Android application for cooking recipes. Users can create, delete 
 and add pictures to recipes, which are stored in a SQLite database.
 
-###[Javadoc](https://users.metropolia.fi/~matiasdn/javadoc/com/example/androidproject/package-summary.html)
+[Javadoc](https://users.metropolia.fi/~matiasdn/javadoc/com/example/androidproject/package-summary.html)
 
 ---
 ## Images
